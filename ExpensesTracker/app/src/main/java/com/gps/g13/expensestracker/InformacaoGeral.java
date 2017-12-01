@@ -1,45 +1,46 @@
 package com.gps.g13.expensestracker;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class InformacaoGeral extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private TextView orcamentoTotal;
+    private TextView dinheiroGasto;
+    private TextView balanco;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacao_geral);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        orcamentoTotal = (TextView) findViewById(R.id.tv_orcamentoTotal);
+        dinheiroGasto = (TextView) findViewById(R.id.tv_dinheiroGasto);
+        balanco = (TextView) findViewById(R.id.balanco);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        orcamentoTotal.setText("Orçamento Total:30€");
+        dinheiroGasto.setText("Dinheiro Gasto: 20€");
+        balanco.setText("Balanço: 10€");
     }
 
     @Override
@@ -80,17 +81,24 @@ public class InformacaoGeral extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_rendimentos) {
+            Toast.makeText(this,"TODO: Rendimentos",Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_alimentacao) {
+            Toast.makeText(this,"TODO: Alimentação",Toast.LENGTH_SHORT).show();
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_alojamento) {
+            Toast.makeText(this,"TODO: Alojamento",Toast.LENGTH_SHORT).show();
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_transportes) {
+            Toast.makeText(this,"TODO: Transportes",Toast.LENGTH_SHORT).show();
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_universidade) {
+            Toast.makeText(this,"TODO: Universidade",Toast.LENGTH_SHORT).show();
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_lazer) {
+            Toast.makeText(this,"TODO: Lazer",Toast.LENGTH_SHORT).show();
+
+        }else if (id == R.id.nav_outros) {
 
         }
 
@@ -98,4 +106,9 @@ public class InformacaoGeral extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+
+
 }
