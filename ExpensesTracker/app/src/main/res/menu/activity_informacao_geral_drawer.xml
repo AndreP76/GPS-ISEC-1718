@@ -4,28 +4,27 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_rendimentos"
-            android:title="Rendimentos" />
+            android:title="@string/rendimentos" />
         <item
             android:id="@+id/nav_alimentacao"
-            android:title="Alimentação" />
+            android:title="@string/alimentacao" />
         <item
             android:id="@+id/nav_alojamento"
-            android:title="Alojamento" />
+            android:title="@string/alojamento" />
         <item
             android:id="@+id/nav_transportes"
-            android:title="Transportes" />
+            android:title="@string/transportes" />
         <item
             android:id="@+id/nav_universidade"
-            android:title="Universidade" />
+            android:title="@string/universidade" />
         <item
             android:id="@+id/nav_lazer"
-            android:title="Lazer" />
+            android:title="@string/lazer" />
         <item
             android:id="@+id/nav_outros"
-            android:title="Outros" />
+            android:title="@string/outros" />
 
     </group>
-
 
 
 </menu>

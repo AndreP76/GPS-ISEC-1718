@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
-        android:text="Expenses Tracker"
+        android:text="@string/app_name"
         android:textColor="#000000"
         android:textSize="30sp"
         android:textStyle="bold"

@@ -38,9 +38,9 @@ public class InformacaoGeral extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        orcamentoTotal.setText("Orçamento Total:30€");
-        dinheiroGasto.setText("Dinheiro Gasto: 20€");
-        balanco.setText("Balanço: 10€");
+        orcamentoTotal.setText(R.string.orcamentoTotal + 30 +R.string.unidadeMonetaria);
+        dinheiroGasto.setText(R.string.dinheiroGasto + 20 + R.string.unidadeMonetaria);
+        balanco.setText(R.string.balanco + 10 + R.string.unidadeMonetaria);
     }
 
     @Override
@@ -74,41 +74,37 @@ public class InformacaoGeral extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-    @SuppressWarnings("StatementWithEmptyBody")
+    
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_rendimentos) {
-            Toast.makeText(this,"TODO: Rendimentos",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "TODO: Rendimentos", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_alimentacao) {
-            Toast.makeText(this,"TODO: Alimentação",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "TODO: Alimentação", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.nav_alojamento) {
-            Toast.makeText(this,"TODO: Alojamento",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "TODO: Alojamento", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.nav_transportes) {
-            Toast.makeText(this,"TODO: Transportes",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "TODO: Transportes", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.nav_universidade) {
-            Toast.makeText(this,"TODO: Universidade",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "TODO: Universidade", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.nav_lazer) {
-            Toast.makeText(this,"TODO: Lazer",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "TODO: Lazer", Toast.LENGTH_SHORT).show();
 
-        }else if (id == R.id.nav_outros) {
-
+        } else if (id == R.id.nav_outros) {
+            Toast.makeText(this, "TODO: Outros", Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
 
 
 }
