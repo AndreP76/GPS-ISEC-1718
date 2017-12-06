@@ -1,6 +1,7 @@
 package com.gps.g13.expensestracker.gestaodedados;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,8 +20,8 @@ public class Dados implements Serializable {
         categorias.put("Rendimentos", new CategoriaRendimento());
     }
 
-    public Map getCategorias() {
-        return categorias;
+    public List getCategorias() {
+        return new ArrayList<>(categorias.values());
     }
 
     public List getTransacoesCategoria(String nome) {
@@ -29,15 +30,47 @@ public class Dados implements Serializable {
     }
 
     public boolean adicionaTransacao(String categoria, String nome, double montante, Date data) {
-        return;
+        boolean resposta = false;
+        Categoria c = categorias.get(categoria);
+        if (c != null) {
+            c.adicionarTransacao(new Transacao(montante, data, nome));
+            resposta = true;
+        }
+        return resposta;
     }
 
-    public boolean removeTransacao(String categoria, String nome) {
-        return true;
+    public boolean removeTransacao(String categoria, String nome) {   // TODO -> pode correr extremamanete mal, fica a dica
+        boolean resposta = false;
+        Categoria c = categorias.get(categoria);
+        if (c != null) {
+            List<Transacao> l = c.getListaDeTransacoes();
+            for (Transacao i : l) {
+                if (i.getNome().compareTo(nome) == 0) {
+                    c.removeTransacao(i);
+                    break;
+                }
+            }
+            resposta = true;
+        }
+        return resposta;
     }
 
-    public boolean editaTransacao(String categoria, String nome, double montante, Date data) {
-        return true;
+    public boolean editaTransacao(String categoria,String nome ,String nomeNovo, double montante, Date data) {
+        boolean resposta = false;
+        Categoria c = categorias.get(categoria);
+        if (c != null) {
+            List<Transacao> l = c.getListaDeTransacoes();
+            for (Transacao i : l) {
+                if (i.getNome().compareTo(nome) == 0) {
+                    i.setMontante(montante);
+                    i.setData(data);
+                    i.setNome(nomeNovo);
+                    break;
+                }
+            }
+            resposta = true;
+        }
+        return resposta;
     }
 
 
