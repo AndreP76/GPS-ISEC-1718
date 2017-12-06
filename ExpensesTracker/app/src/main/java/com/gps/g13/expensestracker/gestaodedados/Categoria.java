@@ -1,11 +1,17 @@
 package com.gps.g13.expensestracker.gestaodedados;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Categoria implements Serializable {
     private String nome;
     private List<Transacao> transacoes;
+
+    public Categoria(String nome){
+        this.nome = nome;
+        transacoes = new ArrayList<>();
+    }
 
     public String getNome() {
         return nome;
