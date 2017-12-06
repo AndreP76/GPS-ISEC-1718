@@ -18,7 +18,7 @@ public abstract class Categoria implements Serializable {
     }
 
     public void adicionarTransacao(Transacao transacao) {
-        if (transacao != null) {
+        if (transacao != null && transacao.getMontante() > 0) {
             transacoes.add(transacao);
         }
     }
