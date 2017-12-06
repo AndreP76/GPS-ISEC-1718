@@ -9,6 +9,9 @@ public class Transacao implements Serializable {
     private String nome;
 
     public Transacao(Double montante, Date data, String nome) {
+        if (montante < 0) {
+            montante = 0.0;
+        }
         this.montante = montante;
         this.data = data;
         this.nome = nome;
@@ -19,7 +22,8 @@ public class Transacao implements Serializable {
     }
 
     public void setMontante(Double montante) {
-        this.montante = montante;
+        if (montante > 0)
+            this.montante = montante;
     }
 
     public Date getData() {
