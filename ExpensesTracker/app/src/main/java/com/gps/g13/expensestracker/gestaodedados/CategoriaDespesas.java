@@ -38,6 +38,6 @@ public class CategoriaDespesas extends Categoria {
     }
 
     public double getOrcamentoRestante() {
-        return orcamento - getResumoDeTransacoes();
+        return orcamento + getResumoDeTransacoes();
     }
 }
