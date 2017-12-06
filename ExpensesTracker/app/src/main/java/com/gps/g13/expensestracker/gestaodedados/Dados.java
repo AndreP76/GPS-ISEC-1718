@@ -55,7 +55,7 @@ public class Dados implements Serializable {
         return resposta;
     }
 
-    public boolean editaTransacao(String categoria,String nome ,String nomeNovo, double montante, Date data) {
+    public boolean editaTransacao(String categoria, String nome, String nomeNovo, double montante, Date data) {
         boolean resposta = false;
         Categoria c = categorias.get(categoria);
         if (c != null) {
