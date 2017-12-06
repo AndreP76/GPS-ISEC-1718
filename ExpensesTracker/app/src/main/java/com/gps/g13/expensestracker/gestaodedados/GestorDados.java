@@ -1,4 +1,4 @@
-package com.gps.g13.expensestracker.GestaoDeDados;
+package com.gps.g13.expensestracker.gestaodedados;
 
 /**
  * Created by Chamuscado on 06/12/2017.

@@ -1,4 +1,4 @@
-package com.gps.g13.expensestracker.GestaoDeDados;
+package com.gps.g13.expensestracker.gestaodedados;
 
 import java.io.Serializable;
 import java.util.Date;
