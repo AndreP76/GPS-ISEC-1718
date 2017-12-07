@@ -100,7 +100,7 @@ public class InformacaoGeral extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Intent intent = new Intent(this, InformacaoDetalhada.class);
+        Intent intent = new Intent(this, InfoDetalhada.class);
         intent.putExtra("GESTAO",gestorDados);
         if (id == R.id.nav_rendimentos) {
             intent.putExtra("TIPO",true);
