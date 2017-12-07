@@ -22,12 +22,16 @@ public class GestorDados {
     private static final String STANDARD_PATH = "";
     private Dados data;
 
-    GestorDados(String dataFilePath) {
+    public GestorDados(String dataFilePath) {
         this.data = readDataFromFile(dataFilePath, true);
     }
 
-    GestorDados(Dados data) {
+    public GestorDados(Dados data) {
         this.data = data;
+    }
+
+    public GestorDados() {
+        this(STANDARD_PATH);
     }
 
     private Dados readDataFromBackupFile(String originFile) {
