@@ -44,6 +44,7 @@ public class Transacao implements Serializable {
         this.nome = nome;
     }
 
+
     @Override
     public int hashCode() {
         return (int) (nome.hashCode() + data.hashCode() + montante);

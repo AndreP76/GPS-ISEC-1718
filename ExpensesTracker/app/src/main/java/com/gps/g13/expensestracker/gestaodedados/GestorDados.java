@@ -17,10 +17,6 @@ import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Chamuscado on 06/12/2017.
- */
-
 public class GestorDados {
     private static final String BACKUP_PATH = "";
     private static final String STANDARD_PATH = "";
@@ -132,6 +128,7 @@ public class GestorDados {
         return readDataFromFile(STANDARD_PATH, true);
     }
 
+    //Guarda toda a informacao da classe em um ficheiro
     public void guardaDados() {
         writeDataToFile(STANDARD_PATH);
         Dados d = readDataFromFile(STANDARD_PATH, false);

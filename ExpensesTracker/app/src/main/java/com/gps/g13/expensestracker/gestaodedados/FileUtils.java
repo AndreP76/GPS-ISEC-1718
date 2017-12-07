@@ -12,11 +12,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-/**
- * Created by andre on 12/6/17.
- */
-
+//Visto que havia funcionalidades na gestao de ficheiros que so estavam disponiveis no API 26 tivemos que criar codigo
 public final class FileUtils {
+
+
+    //copia um ficheiro de uma origem (origin) para um destino (destination) - caso ja exista um ficheiro no destino com o mesmo nome e' apagado e escrito o novo
     public static void copyFiles(String origin, String destination) {
         if (fileExists(origin)) {
             try {
@@ -58,13 +58,14 @@ public final class FileUtils {
         }
     }
 
+    //Metodo que remove um ficheiro no caminho recebido por parametro
     private static boolean removeFile(String origin) throws FileNotFoundException {
         if (fileExists(origin)) {
             File f = new File(origin);
             return f.delete();
         } else throw new FileNotFoundException();
     }
-
+    //Metodo que verifica a existencia de um ficheiro no caminho recebido por parametro
     private static boolean fileExists(String origin) {
         File f = new File(origin);
         return f.exists();
