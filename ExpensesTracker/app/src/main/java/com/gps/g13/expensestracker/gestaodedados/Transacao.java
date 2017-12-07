@@ -46,6 +46,11 @@ public class Transacao implements Serializable {
 
 
     @Override
+    public int hashCode() {
+        return (int) (nome.hashCode() + data.hashCode() + montante);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof Transacao) {
             if (obj == this) return true;

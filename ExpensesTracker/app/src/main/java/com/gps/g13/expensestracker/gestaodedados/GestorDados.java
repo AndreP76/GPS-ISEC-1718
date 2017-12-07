@@ -96,6 +96,22 @@ public class GestorDados {
         }
     }
 
+    public CategoriaRendimento getCategoriaRendimento() {
+        try {
+            return (CategoriaRendimento) data.getCategoria(Dados.RENDIMENTOS_KEY);
+        } catch (InvalidCategoryException e) {
+            Log.wtf("[GESTOR] :: ", "get CategoriaRendimentos was declared invalid!", e);
+            return null;
+        }
+    }
+
+    public Categoria getCategoriaDespesas(String name) throws InvalidCategoryException {
+        if (ValidationModule.isValidExpensesCategory(name, data)) {
+            return data.getCategoria(name);
+        } else
+            throw new InvalidCategoryException("Category " + name + " is not a valid expenses category");
+    }
+
     public List<Categoria> getCategorias() {
         return data.getCategorias();
     }
@@ -152,5 +168,15 @@ public class GestorDados {
         if (ValidationModule.isValidTransaction(categoria, nomeAtual, this.data)) {
             return this.data.editaTransacao(categoria, nomeAtual, novoNome, montante, data);
         } else throw new InvalidTransactionException("Transaction " + nomeAtual + " is invalid");
+    }
+
+    public boolean editarOrcamento(String categoria, double orçamento) throws InvalidCategoryException, InvalidAmmountException {
+        if (ValidationModule.isValidAmmount(orçamento)) {
+            if (ValidationModule.isValidExpensesCategory(categoria, data)) {
+                CategoriaDespesas c = (CategoriaDespesas) data.getCategoria(categoria);
+                c.setOrcamento(orçamento);
+                return true;
+            } else throw new InvalidCategoryException();
+        } else throw new InvalidAmmountException();
     }
 }

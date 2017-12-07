@@ -8,4 +8,8 @@ public class InvalidAmmountException extends Throwable {
     public InvalidAmmountException(String s) {
         super(s);
     }
+
+    public InvalidAmmountException() {
+        super();
+    }
 }

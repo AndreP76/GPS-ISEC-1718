@@ -2,9 +2,15 @@ package com.gps.g13.expensestracker.gestaodedados;
 
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 //Visto que havia funcionalidades na gestao de ficheiros que so estavam disponiveis no API 26 tivemos que criar codigo
 public final class FileUtils {
@@ -30,6 +36,22 @@ public final class FileUtils {
 
         try {
             FileInputStream fIS = new FileInputStream(origin);
+            FileOutputStream fOS = new FileOutputStream(destination);
+            BufferedReader brfIS = new BufferedReader(new InputStreamReader(fIS));
+            BufferedWriter bwfOS = new BufferedWriter(new OutputStreamWriter(fOS));
+            String line;
+            try {
+                while ((line = brfIS.readLine()) != null) {
+                    bwfOS.write(line, 0, line.length());
+                }
+
+                brfIS.close();
+                bwfOS.close();
+                fIS.close();
+                fOS.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -33,4 +33,17 @@ class ValidationModule {
             return data.getCategoria(categoria).containsTransacao(nome);
         } else throw new InvalidCategoryException("Category " + categoria + " is invalid!");
     }
+
+    public static boolean isValidExpensesCategory(String categoria, Dados data) {
+        if (isValidCategory(categoria, data)) {
+            Categoria c = null;
+            try {
+                c = data.getCategoria(categoria);
+            } catch (InvalidCategoryException e) {
+                return false;
+            }
+            return c instanceof CategoriaDespesas;
+        }
+        return false;
+    }
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 
 
 public class Dados implements Serializable {
+    public static final String RENDIMENTOS_KEY = "Rendimentos";
     private Map<String, Categoria> categorias;
 
     public Dados() {
@@ -19,7 +20,7 @@ public class Dados implements Serializable {
         for (ListaNomesCategoriasDespesas i : nomes) {
             categorias.put(i.name(), new CategoriaDespesas(i.name()));
         }
-        categorias.put("Rendimentos", new CategoriaRendimento());
+        categorias.put(RENDIMENTOS_KEY, new CategoriaRendimento());
     }
 
     public boolean containsCategory(String name) {
