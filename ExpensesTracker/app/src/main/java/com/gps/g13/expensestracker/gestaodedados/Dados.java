@@ -1,5 +1,7 @@
 package com.gps.g13.expensestracker.gestaodedados;
 
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidCategoryException;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,4 +86,9 @@ public class Dados implements Serializable {
     }
 
 
+    public Categoria getCategoria(String categoria) throws InvalidCategoryException {
+        if (containsCategory(categoria)) {
+            return categorias.get(categoria);
+        } else throw new InvalidCategoryException("Category " + categoria + " is invalid");
+    }
 }

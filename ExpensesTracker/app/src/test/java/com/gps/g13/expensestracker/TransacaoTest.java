@@ -24,8 +24,5 @@ public class TransacaoTest {
         //quando se introduz x montante positivo o seu montante tem de ser x
         t.setMontante(100.0);
         assertEquals(100.0,t.getMontante(),0);
-
-
-
     }
 }

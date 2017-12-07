@@ -1,5 +1,7 @@
 package com.gps.g13.expensestracker.gestaodedados;
 
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidCategoryException;
+
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -27,5 +29,11 @@ class ValidationModule {
 
     public static boolean isValidCategory(String categoria, Dados data) {
         return data.containsCategory(categoria);
+    }
+
+    public static boolean isValidTransaction(String categoria, String nome, Dados data) throws InvalidCategoryException {
+        if (isValidCategory(categoria, data)) {
+            return data.getCategoria(categoria).containsTransacao(nome);
+        } else throw new InvalidCategoryException("Category " + categoria + " is invalid!");
     }
 }

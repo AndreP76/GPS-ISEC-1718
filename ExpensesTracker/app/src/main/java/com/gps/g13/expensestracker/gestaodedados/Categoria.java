@@ -42,4 +42,13 @@ public abstract class Categoria implements Serializable {
             return transacoes.get(index);
         }
     }
+
+    public boolean containsTransacao(String nome) {
+        for (Transacao t : transacoes) {
+            if (t.getNome().equals(nome)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
