@@ -40,10 +40,10 @@ public class CategoriaDespesasTest {
         d.setOrcamento(20);
 
         //sendo realizada uma transacao/despesa de 5e....
-        Transacao teste1 = new Transacao(5.0, new Date(), "teste");
+        Transacao teste1 = new Transacao(5.0, new Date(), "teste", null);
 
         //sendo realizada uma transacao/despesa de -14e....
-        Transacao teste2 = new Transacao(-14.0, new Date(), "teste");
+        Transacao teste2 = new Transacao(-14.0, new Date(), "teste", null);
 
         d.adicionarTransacao(teste1);
         d.adicionarTransacao(teste2);
@@ -59,12 +59,6 @@ public class CategoriaDespesasTest {
 
         //o resultado tera de ser 20e-5e = 15e
         assertEquals(15, d.getOrcamentoRestante(), 0);
-
-
-
-
-
-
     }
 
 }

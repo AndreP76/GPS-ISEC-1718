@@ -11,5 +11,4 @@ public enum ListaNomesCategoriasDespesas {
     Universidade,
     Lazer,
     Outros
-
 }
