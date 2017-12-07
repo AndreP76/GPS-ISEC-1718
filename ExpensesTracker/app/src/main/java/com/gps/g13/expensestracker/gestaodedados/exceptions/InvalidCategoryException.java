@@ -8,4 +8,8 @@ public class InvalidCategoryException extends Throwable {
     public InvalidCategoryException(String s) {
         super(s);
     }
+
+    public InvalidCategoryException() {
+        super();
+    }
 }
