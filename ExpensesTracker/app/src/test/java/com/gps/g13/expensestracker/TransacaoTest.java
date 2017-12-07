@@ -12,7 +12,7 @@ public class TransacaoTest {
 
     @Test
     public void testeMontante() {
-        Transacao t = new Transacao(-1.0, new Date(), "teste1");
+        Transacao t = new Transacao(-1.0, new Date(), "teste1", null);
 
         //quando se cria uma transacao o seu montante tem de ser 0
         assertEquals(0.0,t.getMontante(),0);

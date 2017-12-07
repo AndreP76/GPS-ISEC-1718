@@ -45,7 +45,7 @@ public class Dados implements Serializable {
         boolean resposta = false;
         Categoria c = categorias.get(categoria);
         if (c != null) {
-            c.adicionarTransacao(new Transacao(montante, data, nome));
+            c.adicionarTransacao(new Transacao(montante, data, nome, c));
             resposta = true;
         }
         return resposta;
