@@ -25,7 +25,7 @@ public class TransacaoTest {
         t.setMontante(100.0);
         assertEquals(100.0,t.getMontante(),0);
 
-        t = new Transacao(100.0, new Date(), "teste1");
+        t = new Transacao(100.0, new Date(), "teste1", null);
         assertEquals(100.0, t.getMontante(), 0);
 
         //quando se introduz um montante negativo o seu montante não se deve alterar
