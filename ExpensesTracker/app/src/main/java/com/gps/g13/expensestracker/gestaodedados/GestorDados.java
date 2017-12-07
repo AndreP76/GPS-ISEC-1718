@@ -2,13 +2,18 @@ package com.gps.g13.expensestracker.gestaodedados;
 
 import android.util.Log;
 
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidAmmountException;
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidCategoryException;
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidDateException;
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidNameException;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.URL;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,10 +22,11 @@ import java.util.List;
 
 public class GestorDados {
     private static final String BACKUP_PATH = "";
+    private static final String STANDARD_PATH = "";
     private Dados data;
 
     GestorDados(String dataFilePath) {
-        this.data = readDataFromFile(dataFilePath);
+        this.data = readDataFromFile(dataFilePath, true);
     }
 
     GestorDados(Dados data) {
@@ -49,7 +55,7 @@ public class GestorDados {
         return null;
     }
 
-    private Dados readDataFromFile(String dataFile) {
+    private Dados readDataFromFile(String dataFile, boolean useBackup) {
         try (FileInputStream fIn = new FileInputStream(dataFile)) {
             try (ObjectInputStream OIS = new ObjectInputStream(fIn)) {
                 Object o = OIS.readObject();
@@ -59,7 +65,9 @@ public class GestorDados {
                     return (Dados) o;
                 }
             } catch (ClassNotFoundException e) {
-                return readDataFromBackupFile(dataFile);
+                if (useBackup)
+                    return readDataFromBackupFile(dataFile);
+                else return new Dados();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -74,9 +82,9 @@ public class GestorDados {
         FileUtils.copyFiles(BACKUP_PATH, dataFile);
     }
 
-    private void writeDataToFile(URL dataFile) {
+    private void writeDataToFile(String dataFile) {
         try {
-            try (FileOutputStream writeOut = new FileOutputStream(dataFile.getFile())) {
+            try (FileOutputStream writeOut = new FileOutputStream(dataFile)) {
                 try (ObjectOutputStream oos = new ObjectOutputStream(writeOut)) {
                     oos.writeObject(data);
                     oos.flush();
@@ -99,4 +107,36 @@ public class GestorDados {
         return data.getTransacoesCategoria(name);
     }
 
+    public Dados carregaDados() {
+        return readDataFromFile(STANDARD_PATH, true);
+    }
+
+    public void guardaDados() {
+        writeDataToFile(STANDARD_PATH);
+        Dados d = readDataFromFile(STANDARD_PATH, false);
+        if (d != null && d.equals(data)) {
+            Log.v("[GESTOR] :: ", "Data integrity confirmed. Replacing backup file");
+            writeDataToFile(BACKUP_PATH);
+        } else {
+            if (d == null) {
+                Log.e("[GESTOR] :: ", "Reading from just written data returned null. Overriding with backup file");
+                overrideFileWithBackup(STANDARD_PATH);
+            } else if (!d.equals(data)) {
+                Log.w("[GESTOR] :: ", "Reading from just written data returned a different value from expected. Overriding with backup file");
+                overrideFileWithBackup(STANDARD_PATH);
+            }
+        }
+    }
+
+    public boolean adicionaTransacao(String categoria, String nome, double montante, Date data) throws InvalidNameException, InvalidAmmountException, InvalidDateException, InvalidCategoryException {
+        if (ValidationModule.isValidCategory(categoria, this.data)) {
+            if (ValidationModule.isValidName(nome)) {
+                if (ValidationModule.isValidAmmount(montante)) {
+                    if (ValidationModule.isValidDate(data)) {
+                        return this.data.adicionaTransacao(categoria, nome, montante, data);
+                    } else throw new InvalidDateException("Data " + data + "is invalid!");
+                } else throw new InvalidAmmountException("Ammount " + montante + "is invalid!");
+            } else throw new InvalidNameException("Name " + nome + "is invalid!");
+        } else throw new InvalidCategoryException("Category " + categoria + "is invalid!");
+    }
 }

@@ -20,6 +20,16 @@ public class Dados implements Serializable {
         categorias.put("Rendimentos", new CategoriaRendimento());
     }
 
+    public boolean containsCategory(String name) {
+        for (Categoria c :
+                getCategorias()) {
+            if (c.getNome().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<Categoria> getCategorias() {
         return new ArrayList<>(categorias.values());
     }

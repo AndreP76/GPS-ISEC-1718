@@ -6,12 +6,12 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TransacaoTest {
 
     @Test
-    public void testeMontate() {
+    public void testeMontante() {
         Transacao t = new Transacao(-1.0, new Date(), "teste1");
 
         //quando se cria uma transacao o seu montante tem de ser 0
