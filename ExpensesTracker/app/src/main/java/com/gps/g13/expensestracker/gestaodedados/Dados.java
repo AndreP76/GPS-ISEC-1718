@@ -20,11 +20,11 @@ public class Dados implements Serializable {
         categorias.put("Rendimentos", new CategoriaRendimento());
     }
 
-    public List getCategorias() {
+    public List<Categoria> getCategorias() {
         return new ArrayList<>(categorias.values());
     }
 
-    public List getTransacoesCategoria(String nome) {
+    public List<Transacao> getTransacoesCategoria(String nome) {
         Categoria cat = categorias.get(nome);
         return cat != null ? cat.getListaDeTransacoes() : null;
     }
