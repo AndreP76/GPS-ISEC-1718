@@ -23,7 +23,9 @@ public final class FileUtils {
                 int i = 0;
                 for (i = 0; i < 10; ++i) {
                     Log.v("[GESTOR] :: ", "Tentativa " + (i + 1));
-                    if (removeFile(origin)) break;
+                    if (removeFile(origin)) {
+                        break;
+                    }
                     Log.w("[GESTOR] :: ", "Remoção falhou");
                 }
                 if (i >= 10) {
@@ -63,8 +65,11 @@ public final class FileUtils {
         if (fileExists(origin)) {
             File f = new File(origin);
             return f.delete();
-        } else throw new FileNotFoundException();
+        } else {
+            throw new FileNotFoundException();
+        }
     }
+
     //Metodo que verifica a existencia de um ficheiro no caminho recebido por parametro
     private static boolean fileExists(String origin) {
         File f = new File(origin);
