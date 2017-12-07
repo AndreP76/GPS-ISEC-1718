@@ -86,6 +86,21 @@ public class InfoDetalhada extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
 
+
+        //ver o que lancar para criar transacao;
+        //atencao que temos criar e editar
+        if (item.getItemId()==R.id.criaTransacao) {
+            Intent intent = new Intent(this,/*insereActivity*/.class);         //// nao sei o que por para
+            intent.putExtras("GD",gestDados);                                ///// lançar a atividade
+            intent.putExtra("TR");                                             //   para criar uma nova transacao
+            startActivity(intent);
+
+        }else if(item.getItemId()==R.id.EditaOrcamento) {
+            //aqui bruno
+        }
+
+
+
         return super.onOptionsItemSelected(item);
 
     }
@@ -165,17 +180,20 @@ public class InfoDetalhada extends AppCompatActivity {
                     if(!isRendimento) {
                         try {
 
-                            Intent intent = new Intent(this,inserirActivity.class);
+                            Intent intent = new Intent(this,/*insereActivity*/.class);
                             intent.putExtras("GD",gestDados);
                             intent.putExtra("TR",gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(posicao));
+                            startActivity(intent);
                         } catch (InvalidCategoryException e) {
                             e.printStackTrace();
                         }
                     }
                     else{
-                        Intent intent = new Intent(this,inserirActivity.class);
+                        Intent intent = new Intent(this,/*insereActivity*/.class);
                         intent.putExtras("GD",gestDados);
-                        intent.putExtra("TR",gestDados.getCategoriaRendimento().getListaDeTransacoes().get(posicao));
+                        intent.putExtra("TR",gestDados.getCategoriaRendimento().getListaDeTransacoes().get(posicao));                            startActivity(intent);
+                        startActivity(intent);
+
                     }
                 }
             });
