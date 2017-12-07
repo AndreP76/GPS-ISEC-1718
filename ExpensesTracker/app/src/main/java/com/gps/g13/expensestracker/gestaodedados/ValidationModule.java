@@ -28,7 +28,7 @@ class ValidationModule {
     }
 
     public static boolean isValidCategory(String categoria, Dados data) {
-        return data.containsCategory(categoria);
+        return categoria != null && data.containsCategory(categoria);
     }
 
     public static boolean isValidTransaction(String categoria, String nome, Dados data) throws InvalidCategoryException {
