@@ -1,5 +1,6 @@
 package com.gps.g13.expensestracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
@@ -9,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gps.g13.expensestracker.gestaodedados.Categoria;
 import com.gps.g13.expensestracker.gestaodedados.CategoriaRendimento;
@@ -100,27 +100,38 @@ public class InformacaoGeral extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        Intent intent = new Intent(this, InformacaoDetalhada.class);
+        intent.putExtra("GESTAO",gestorDados);
         if (id == R.id.nav_rendimentos) {
-            Toast.makeText(this, "TODO: Rendimentos", Toast.LENGTH_SHORT).show();
+            intent.putExtra("TIPO",true);
+
+
         } else if (id == R.id.nav_alimentacao) {
-            Toast.makeText(this, "TODO: Alimentação", Toast.LENGTH_SHORT).show();
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Alimentação");
 
         } else if (id == R.id.nav_alojamento) {
-            Toast.makeText(this, "TODO: Alojamento", Toast.LENGTH_SHORT).show();
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Alojamento");
 
         } else if (id == R.id.nav_transportes) {
-            Toast.makeText(this, "TODO: Transportes", Toast.LENGTH_SHORT).show();
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Transportes");
 
         } else if (id == R.id.nav_universidade) {
-            Toast.makeText(this, "TODO: Universidade", Toast.LENGTH_SHORT).show();
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Universidade");
 
         } else if (id == R.id.nav_lazer) {
-            Toast.makeText(this, "TODO: Lazer", Toast.LENGTH_SHORT).show();
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Lazer");
 
         } else if (id == R.id.nav_outros) {
-            Toast.makeText(this, "TODO: Outros", Toast.LENGTH_SHORT).show();
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Outros");
         }
+
+        startActivity(intent);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
