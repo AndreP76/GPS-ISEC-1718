@@ -1,6 +1,9 @@
 package com.gps.g13.expensestracker;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 import com.gps.g13.expensestracker.gestaodedados.ListaNomesCategoriasDespesas;
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidCategoryException;
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidTransactionException;
 
 import org.w3c.dom.Text;
 
@@ -29,6 +33,8 @@ public class InfoDetalhada extends AppCompatActivity {
     private TextView tvSubTitulo;
     private TextView tvRodape;
 
+    //para dialogBox
+    final Context context = this;
 
     private ListView lv;
     @Override
@@ -51,13 +57,17 @@ public class InfoDetalhada extends AppCompatActivity {
             categoria=extras.getString("CATEGORIA");
 
             try {
-                tvSubTitulo.setText("Orcamento: " + gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes()+"€");
                 tvCategoria.setText(gestDados.getCategoriaDespesas(categoria).getNome());
+                tvSubTitulo.setText("Orcamento: " + "falta metodo para pedir orcamento" + "€");
+                tvRodape.setText("Orcamento Restante " + gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes());
+
             } catch (InvalidCategoryException e) {
                 e.printStackTrace();
             }
         }else{
             tvCategoria.setText("Rendimentos");
+            tvRodape.setText("Dinheiro Total: " + "falta metodo para pedir dinheiro total" +"€");
+            tvRodape.setText("Orcamento disponível: " + gestDados.getCategoriaRendimento().getResumoDeTransacoes());
         }
 
         lv =(ListView)findViewById(R.id.lista_de_transacoes);
@@ -81,7 +91,7 @@ public class InfoDetalhada extends AppCompatActivity {
     }
 
     class lvAdapter extends BaseAdapter{
-        private int possicao;
+        private int posicao;
 
         @Override
         public int getCount() {
@@ -123,7 +133,7 @@ public class InfoDetalhada extends AppCompatActivity {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             View linha =getLayoutInflater().inflate(R.layout.linha_da_lista_de_transacoes,null);
-            possicao=i;
+            posicao=i;
             TextView tv_nomeTransacao= (TextView) findViewById(R.id.tv_nomeCategoria_infoDetalhada);
             TextView tvValorTransacao= (TextView) findViewById(R.id.tv_ValorTransacao_InfoGeral);
             TextView tvDataTransacao= (TextView) findViewById(R.id.tv_DataTransacao_InfoGeral);
@@ -138,9 +148,6 @@ public class InfoDetalhada extends AppCompatActivity {
                     tv_nomeTransacao.setText(gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(i).getNome());
                     tvValorTransacao.setText(""+gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(i).getMontante());
                     tvDataTransacao.setText("" + gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(i).getData());
-
-
-
                 } catch (InvalidCategoryException e) {
                     e.printStackTrace();
                     return null;
@@ -150,7 +157,6 @@ public class InfoDetalhada extends AppCompatActivity {
                 tv_nomeTransacao.setText(gestDados.getCategoriaRendimento().getListaDeTransacoes().get(i).getNome());
                 tvValorTransacao.setText(""+gestDados.getCategoriaRendimento().getListaDeTransacoes().get(i).getMontante());
                 tvDataTransacao.setText("" + gestDados.getCategoriaRendimento().getListaDeTransacoes().get(i).getData());
-
             }
 
             btnEdite.setOnClickListener(new View.OnClickListener() {
@@ -161,9 +167,7 @@ public class InfoDetalhada extends AppCompatActivity {
 
                             Intent intent = new Intent(this,inserirActivity.class);
                             intent.putExtras("GD",gestDados);
-                            intent.putExtra("TR",gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(possicao));
-
-
+                            intent.putExtra("TR",gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(posicao));
                         } catch (InvalidCategoryException e) {
                             e.printStackTrace();
                         }
@@ -171,33 +175,64 @@ public class InfoDetalhada extends AppCompatActivity {
                     else{
                         Intent intent = new Intent(this,inserirActivity.class);
                         intent.putExtras("GD",gestDados);
-                        intent.putExtra("TR",gestDados.getCategoriaRendimento().getListaDeTransacoes().get(possicao));
-
+                        intent.putExtra("TR",gestDados.getCategoriaRendimento().getListaDeTransacoes().get(posicao));
                     }
-
-
                 }
             });
 
             btnRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(!isRendimento) {
-                        try {
-                        gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().remove(possicao);
-                            gestDados.removeTransacao(gestDados.getCategoriaDespesas(categoria).getNome(),gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(i).getNome());
 
 
-                        } catch (InvalidCategoryException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
-                    else{
-                        gestDados.getCategoriaRendimento().getListaDeTransacoes().remove(possicao);
-                        gestDados.removeTransacao(gestDados.getCategoriaRendimento().getNome(),gestDados.getCategoriaRendimento().getListaDeTransacoes().get(i).getNome());
-                    }
+                    // set title
+                    alertDialogBuilder.setTitle("Tem a certeza que pretende apagar?");
 
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setCancelable(false)
+                            .setNegativeButton("Yes",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    if(!isRendimento) {
+                                        try {
+                                            gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().remove(posicao);
+                                            gestDados.removeTransacao(gestDados.getCategoriaDespesas(categoria).getNome(),gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(posicao).getNome());
+
+
+                                        } catch (InvalidCategoryException e) {
+                                            e.printStackTrace();
+                                        } catch (InvalidTransactionException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    else{
+                                        gestDados.getCategoriaRendimento().getListaDeTransacoes().remove(posicao);
+                                        try {
+                                            gestDados.removeTransacao(gestDados.getCategoriaRendimento().getNome(),gestDados.getCategoriaRendimento().getListaDeTransacoes().get(posicao).getNome());
+                                        } catch (InvalidCategoryException e) {
+                                            e.printStackTrace();
+                                        } catch (InvalidTransactionException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                            })
+                            .setPositiveButton("No",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // if this button is clicked, just close
+                                    // the dialog box and do nothing
+                                    dialog.cancel();
+                                }
+                            });
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
                 }
             });
 
