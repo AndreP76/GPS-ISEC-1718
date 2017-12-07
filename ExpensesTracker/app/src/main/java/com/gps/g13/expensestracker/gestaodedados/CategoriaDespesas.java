@@ -20,7 +20,9 @@ public class CategoriaDespesas extends Categoria {
     }
 
     public void setOrcamento(double orcamento) {
-        this.orcamento = orcamento;
+        if (orcamento > 0) {
+            this.orcamento = orcamento;
+        }
     }
 
     @Override
