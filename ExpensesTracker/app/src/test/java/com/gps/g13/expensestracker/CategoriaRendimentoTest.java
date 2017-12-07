@@ -18,7 +18,7 @@ public class CategoriaRendimentoTest {
         CategoriaRendimento r = new CategoriaRendimento();
 
         //sendo realizada uma transacao/despesa de 5e....
-        r.adicionarTransacao(new Transacao(5.0, new Date(), "teste", null));
+        r.adicionarTransacao(new Transacao(5.0, new Date(), "teste",null));
 
         //o resultado da getResumoDeTransacoes e' 5, pq foi adicionado um rendimento de 5e
         assertEquals(5.0, r.getResumoDeTransacoes(), 0);

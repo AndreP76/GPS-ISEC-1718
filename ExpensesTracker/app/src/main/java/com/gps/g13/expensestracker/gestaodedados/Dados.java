@@ -24,8 +24,7 @@ public class Dados implements Serializable {
     }
 
     public boolean containsCategory(String name) {
-        for (Categoria c :
-                getCategorias()) {
+        for (Categoria c : getCategorias()) {
             if (c.getNome().equals(name)) {
                 return true;
             }
@@ -90,6 +89,8 @@ public class Dados implements Serializable {
     public Categoria getCategoria(String categoria) throws InvalidCategoryException {
         if (containsCategory(categoria)) {
             return categorias.get(categoria);
-        } else throw new InvalidCategoryException("Category " + categoria + " is invalid");
+        } else {
+            throw new InvalidCategoryException("Category " + categoria + " is invalid");
+        }
     }
 }

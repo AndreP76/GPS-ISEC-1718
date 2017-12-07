@@ -19,14 +19,14 @@ import java.util.List;
 
 public class GestorDados {
     private static final String BACKUP_PATH = "";
-    private static final String STANDARD_PATH = "ficheiro";
+    private static final String STANDARD_PATH = "";
     private Dados data;
 
-    public GestorDados(String dataFilePath) {
+    GestorDados(String dataFilePath) {
         this.data = readDataFromFile(dataFilePath, true);
     }
 
-    public GestorDados(Dados data) {
+    GestorDados(Dados data) {
         this.data = data;
     }
 
