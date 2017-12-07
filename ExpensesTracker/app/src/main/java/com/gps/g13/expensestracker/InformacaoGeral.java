@@ -11,26 +11,33 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gps.g13.expensestracker.gestaodedados.Categoria;
+import com.gps.g13.expensestracker.gestaodedados.CategoriaRendimento;
+import com.gps.g13.expensestracker.gestaodedados.GestorDados;
+
+import java.util.List;
+
 public class InformacaoGeral extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView orcamentoTotal;
-    private TextView dinheiroGasto;
-    private TextView balanco;
+    private TextView tvOrcamentoTotal;
+    private TextView tvDinheiroGasto;
+    private TextView tvBalanco;
+    private GestorDados gestorDados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacao_geral);
 
+        gestorDados = new GestorDados();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        orcamentoTotal = (TextView) findViewById(R.id.tv_orcamentoTotal);
-        dinheiroGasto = (TextView) findViewById(R.id.tv_dinheiroGasto);
-        balanco = (TextView) findViewById(R.id.balanco);
+        tvOrcamentoTotal = (TextView) findViewById(R.id.tv_orcamentoTotal);
+        tvDinheiroGasto = (TextView) findViewById(R.id.tv_dinheiroGasto);
+        tvBalanco = (TextView) findViewById(R.id.balanco);
     }
 
 
@@ -38,9 +45,23 @@ public class InformacaoGeral extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        orcamentoTotal.setText(getResources().getString(R.string.orcamentototal)  + 30 + getResources().getString(R.string.unidade_monetaria));
-        dinheiroGasto.setText(getResources().getString(R.string.dinheiroGasto) + 20 + getResources().getString(R.string.unidade_monetaria));
-        balanco.setText(getResources().getString(R.string.balanco) + 10 + getResources().getString(R.string.unidade_monetaria));
+        double orcamento = gestorDados.getCategoriaRendimento().getResumoDeTransacoes();
+        double dinheiroGasto = 0.0;
+        double balanco;
+
+        List<Categoria> categorias = gestorDados.getCategorias();
+        for (Categoria c : categorias) {
+            if(!c.getNome().equalsIgnoreCase(CategoriaRendimento.NOME_RENDIMENTO)) {
+                dinheiroGasto += c.getResumoDeTransacoes();
+            }
+        }
+        dinheiroGasto = -dinheiroGasto;
+
+        balanco = orcamento - dinheiroGasto;
+
+        tvOrcamentoTotal.setText(getResources().getString(R.string.orcamentototal) + orcamento + getResources().getString(R.string.unidade_monetaria));
+        tvDinheiroGasto.setText(getResources().getString(R.string.dinheiroGasto) + dinheiroGasto + getResources().getString(R.string.unidade_monetaria));
+        tvBalanco.setText(getResources().getString(R.string.balanco) + balanco + getResources().getString(R.string.unidade_monetaria));
     }
 
     @Override
@@ -74,7 +95,7 @@ public class InformacaoGeral extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-    
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
