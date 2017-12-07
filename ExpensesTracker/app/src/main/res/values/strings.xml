@@ -5,10 +5,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Definições</string>
-    <string name="orcamentoTotal">Orçamento Total: </string>
-    <string name="dinheiroGasto">Dinheiro Gasto: </string>
-    <string name="balanco">Balanço: </string>
-    <string name="unidadeMonetaria"> € </string>
+    <string name="orcamentototal">Orçamento Total:\u0020</string>
+    <string name="dinheiroGasto">Dinheiro Gasto:\u0020</string>
+    <string name="balanco">"Balanço: "</string>
+    <string name="unidade_monetaria">" € "</string>
     <string name="rendimentos">Rendimentos</string>
     <string name="alimentacao">Alimentação</string>
     <string name="alojamento">Alojamento</string>

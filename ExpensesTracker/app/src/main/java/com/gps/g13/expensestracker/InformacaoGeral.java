@@ -38,9 +38,9 @@ public class InformacaoGeral extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        orcamentoTotal.setText(R.string.orcamentoTotal + 30 +R.string.unidadeMonetaria);
-        dinheiroGasto.setText(R.string.dinheiroGasto + 20 + R.string.unidadeMonetaria);
-        balanco.setText(R.string.balanco + 10 + R.string.unidadeMonetaria);
+        orcamentoTotal.setText(getResources().getString(R.string.orcamentototal)  + 30 + getResources().getString(R.string.unidade_monetaria));
+        dinheiroGasto.setText(getResources().getString(R.string.dinheiroGasto) + 20 + getResources().getString(R.string.unidade_monetaria));
+        balanco.setText(getResources().getString(R.string.balanco) + 10 + getResources().getString(R.string.unidade_monetaria));
     }
 
     @Override
