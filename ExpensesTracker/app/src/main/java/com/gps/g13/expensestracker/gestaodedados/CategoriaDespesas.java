@@ -2,10 +2,6 @@ package com.gps.g13.expensestracker.gestaodedados;
 
 import java.util.List;
 
-/**
- * Created by Chamuscado on 06/12/2017.
- */
-
 public class CategoriaDespesas extends Categoria {
 
     private double orcamento;
@@ -19,12 +15,14 @@ public class CategoriaDespesas extends Categoria {
         return orcamento;
     }
 
+    //so aceita orcamentos de valor positivo
     public void setOrcamento(double orcamento) {
         if (orcamento > 0) {
             this.orcamento = orcamento;
         }
     }
 
+    //este metodo percorre todas as transacoes realizadas e adiciona o seu montante. Neste caso como as transacoes sao Despesas retornamos como um valor negativo
     @Override
     public double getResumoDeTransacoes() {
         double soma = 0.0;
@@ -35,10 +33,10 @@ public class CategoriaDespesas extends Categoria {
                 soma += lista.get(i).getMontante();
             }
         }
-
         return -soma;
     }
 
+    //vai retornar o orcamento que ainda resta da respetiva Despesa
     public double getOrcamentoRestante() {
         return orcamento + getResumoDeTransacoes();
     }

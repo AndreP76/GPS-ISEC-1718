@@ -17,14 +17,14 @@ import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Chamuscado on 06/12/2017.
- */
-
 public class GestorDados {
     private static final String BACKUP_PATH = "";
     private static final String STANDARD_PATH = "";
     private Dados data;
+
+    GestorDados() {
+        this(STANDARD_PATH);
+    }
 
     GestorDados(String dataFilePath) {
         this.data = readDataFromFile(dataFilePath, true);
@@ -66,9 +66,11 @@ public class GestorDados {
                     return (Dados) o;
                 }
             } catch (ClassNotFoundException e) {
-                if (useBackup)
+                if (useBackup) {
                     return readDataFromBackupFile(dataFile);
-                else return new Dados();
+                } else {
+                    return new Dados();
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -100,6 +102,23 @@ public class GestorDados {
         }
     }
 
+    public CategoriaRendimento getCategoriaRendimento() {
+        try {
+            return (CategoriaRendimento) data.getCategoria(Dados.RENDIMENTOS_KEY);
+        } catch (InvalidCategoryException e) {
+            Log.wtf("[GESTOR] :: ", "get CategoriaRendimentos was declared invalid!", e);
+            return null;
+        }
+    }
+
+    public Categoria getCategoriaDespesas(String name) throws InvalidCategoryException {
+        if (ValidationModule.isValidExpensesCategory(name, data)) {
+            return data.getCategoria(name);
+        } else {
+            throw new InvalidCategoryException("Category " + name + " is not a valid expenses category");
+        }
+    }
+
     public List<Categoria> getCategorias() {
         return data.getCategorias();
     }
@@ -112,6 +131,7 @@ public class GestorDados {
         return readDataFromFile(STANDARD_PATH, true);
     }
 
+    //Guarda toda a informacao da classe em um ficheiro
     public void guardaDados() {
         writeDataToFile(STANDARD_PATH);
         Dados d = readDataFromFile(STANDARD_PATH, false);
@@ -135,25 +155,52 @@ public class GestorDados {
                 if (ValidationModule.isValidAmmount(montante)) {
                     if (ValidationModule.isValidDate(data)) {
                         return this.data.adicionaTransacao(categoria, nome, montante, data);
-                    } else throw new InvalidDateException("Data " + data + "is invalid!");
-                } else throw new InvalidAmmountException("Ammount " + montante + "is invalid!");
-            } else throw new InvalidNameException("Name " + nome + "is invalid!");
-        } else throw new InvalidCategoryException("Category " + categoria + "is invalid!");
+                    } else {
+                        throw new InvalidDateException("Data " + data + "is invalid!");
+                    }
+                } else {
+                    throw new InvalidAmmountException("Ammount " + montante + "is invalid!");
+                }
+            } else {
+                throw new InvalidNameException("Name " + nome + "is invalid!");
+            }
+        } else {
+            throw new InvalidCategoryException("Category " + categoria + "is invalid!");
+        }
     }
 
     public boolean removeTransacao(String categoria, String nome) throws InvalidCategoryException, InvalidTransactionException {
         if (ValidationModule.isValidCategory(categoria, data)) {
             if (ValidationModule.isValidTransaction(categoria, nome, data)) {
                 data.removeTransacao(categoria, nome);
-            } else
+            } else {
                 throw new InvalidTransactionException("Transaction " + categoria + " :: " + nome);
-        } else throw new InvalidCategoryException("Category " + categoria + " is invalid!");
+            }
+        } else {
+            throw new InvalidCategoryException("Category " + categoria + " is invalid!");
+        }
         return false;
     }
 
     public boolean editarTransacao(String categoria, String nomeAtual, String novoNome, double montante, Date data) throws InvalidCategoryException, InvalidTransactionException {
         if (ValidationModule.isValidTransaction(categoria, nomeAtual, this.data)) {
             return this.data.editaTransacao(categoria, nomeAtual, novoNome, montante, data);
-        } else throw new InvalidTransactionException("Transaction " + nomeAtual + " is invalid");
+        } else {
+            throw new InvalidTransactionException("Transaction " + nomeAtual + " is invalid");
+        }
+    }
+
+    public boolean editarOrcamento(String categoria, double orçamento) throws InvalidCategoryException, InvalidAmmountException {
+        if (ValidationModule.isValidAmmount(orçamento)) {
+            if (ValidationModule.isValidExpensesCategory(categoria, data)) {
+                CategoriaDespesas c = (CategoriaDespesas) data.getCategoria(categoria);
+                c.setOrcamento(orçamento);
+                return true;
+            } else {
+                throw new InvalidCategoryException();
+            }
+        } else {
+            throw new InvalidAmmountException();
+        }
     }
 }

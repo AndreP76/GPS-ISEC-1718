@@ -5,10 +5,7 @@ import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidCategoryExcep
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-/**
- * Created by andre on 12/7/17.
- */
-
+//Classe que trata de todas as validacoes
 class ValidationModule {
     public static boolean isValidDate(Date data) {
         GregorianCalendar GC = new GregorianCalendar();
@@ -28,12 +25,27 @@ class ValidationModule {
     }
 
     public static boolean isValidCategory(String categoria, Dados data) {
-        return data.containsCategory(categoria);
+        return categoria != null && data.containsCategory(categoria);
     }
 
     public static boolean isValidTransaction(String categoria, String nome, Dados data) throws InvalidCategoryException {
         if (isValidCategory(categoria, data)) {
             return data.getCategoria(categoria).containsTransacao(nome);
-        } else throw new InvalidCategoryException("Category " + categoria + " is invalid!");
+        } else {
+            throw new InvalidCategoryException("Category " + categoria + " is invalid!");
+        }
+    }
+
+    public static boolean isValidExpensesCategory(String categoria, Dados data) {
+        if (isValidCategory(categoria, data)) {
+            Categoria c = null;
+            try {
+                c = data.getCategoria(categoria);
+            } catch (InvalidCategoryException e) {
+                return false;
+            }
+            return c instanceof CategoriaDespesas;
+        }
+        return false;
     }
 }

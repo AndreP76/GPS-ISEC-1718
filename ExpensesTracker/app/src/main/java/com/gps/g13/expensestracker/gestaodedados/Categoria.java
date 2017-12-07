@@ -17,6 +17,7 @@ public abstract class Categoria implements Serializable {
         return nome;
     }
 
+    //quando se adiciona uma transacao so' e' possivel adicionar transacoes nao nulas e montante positivo
     public void adicionarTransacao(Transacao transacao) {
         if (transacao != null && transacao.getMontante() > 0) {
             transacoes.add(transacao);
@@ -35,6 +36,7 @@ public abstract class Categoria implements Serializable {
         return transacoes;
     }
 
+    //se o index que e' recebido por parametro e' menor que 0 ou maior que o tamanho da List e' retornado null
     public Transacao getTransacao(int index) {
         if (index < 0 || index >= transacoes.size()) {
             return null;

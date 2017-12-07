@@ -11,6 +11,7 @@ import java.util.Map;
 
 
 public class Dados implements Serializable {
+    public static final String RENDIMENTOS_KEY = "Rendimentos";
     private Map<String, Categoria> categorias;
 
     public Dados() {
@@ -19,12 +20,11 @@ public class Dados implements Serializable {
         for (ListaNomesCategoriasDespesas i : nomes) {
             categorias.put(i.name(), new CategoriaDespesas(i.name()));
         }
-        categorias.put("Rendimentos", new CategoriaRendimento());
+        categorias.put(RENDIMENTOS_KEY, new CategoriaRendimento());
     }
 
     public boolean containsCategory(String name) {
-        for (Categoria c :
-                getCategorias()) {
+        for (Categoria c : getCategorias()) {
             if (c.getNome().equals(name)) {
                 return true;
             }
@@ -89,6 +89,8 @@ public class Dados implements Serializable {
     public Categoria getCategoria(String categoria) throws InvalidCategoryException {
         if (containsCategory(categoria)) {
             return categorias.get(categoria);
-        } else throw new InvalidCategoryException("Category " + categoria + " is invalid");
+        } else {
+            throw new InvalidCategoryException("Category " + categoria + " is invalid");
+        }
     }
 }
