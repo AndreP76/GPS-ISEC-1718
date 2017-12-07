@@ -26,6 +26,10 @@ public class GestorDados {
     private static final String STANDARD_PATH = "";
     private Dados data;
 
+    GestorDados() {
+        this(STANDARD_PATH);
+    }
+
     GestorDados(String dataFilePath) {
         this.data = readDataFromFile(dataFilePath, true);
     }
