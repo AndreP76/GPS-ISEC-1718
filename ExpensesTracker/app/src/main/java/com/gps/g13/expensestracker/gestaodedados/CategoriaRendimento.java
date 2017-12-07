@@ -13,6 +13,7 @@ public class CategoriaRendimento extends Categoria {
         super(NOME_RENDIMENTO);
     }
 
+    //este metodo percorre todas as transacoes realizadas e adiciona o seu montante. Neste caso como as transacooes sao Rendimentos retornamos como um valor positivo
     @Override
     public double getResumoDeTransacoes() {
         double soma = 0.0;

@@ -5,10 +5,7 @@ import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidCategoryExcep
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-/**
- * Created by andre on 12/7/17.
- */
-
+//Classe que trata de todas as validacoes
 class ValidationModule {
     public static boolean isValidDate(Date data) {
         GregorianCalendar GC = new GregorianCalendar();

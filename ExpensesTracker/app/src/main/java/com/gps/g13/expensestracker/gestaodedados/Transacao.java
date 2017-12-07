@@ -44,6 +44,7 @@ public class Transacao implements Serializable {
         this.nome = nome;
     }
 
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Transacao) {
