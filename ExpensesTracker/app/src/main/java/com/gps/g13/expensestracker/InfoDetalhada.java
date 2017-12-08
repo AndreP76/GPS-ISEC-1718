@@ -35,6 +35,10 @@ import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidTransactionEx
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class InfoDetalhada extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -249,21 +253,30 @@ public class InfoDetalhada extends AppCompatActivity
             TextView tvDataTransacao = (TextView) linha.findViewById(R.id.tv_DataTransacao_InfoGeral);
             Button btnRemove = (Button) linha.findViewById(R.id.btn_delete_linha);
             Button btnEdite = (Button) linha.findViewById(R.id.btn_edit_linha);
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            Date dAux; //so para simplicar o codigo, poderia ser evitada esta variavel
 
             if (!isRendimento) {
                 try {
                     tv_nomeTransacao.setText(gestDados.getCategoriaDespesas(categoria).getTransacao(i).getNome());
-                    tvValorTransacao.setText("" + gestDados.getCategoriaDespesas(categoria).getTransacao(i).getMontante());
-                    tvDataTransacao.setText("" + gestDados.getCategoriaDespesas(categoria).getTransacao(i).getData());
+                    tvValorTransacao.setText("" + gestDados.getCategoriaDespesas(categoria).getTransacao(i).getMontante() + "€");
+                    dAux = gestDados.getCategoriaDespesas(categoria).getTransacao(i).getData();
+                    tvDataTransacao.setText("" + df.format(dAux));
 
                 } catch (InvalidCategoryException e) {
                     e.printStackTrace();
                     return null;
                 }
             } else {
+                try {
                 tv_nomeTransacao.setText(gestDados.getCategoriaRendimento().getTransacao(i).getNome());
                 tvValorTransacao.setText("" + gestDados.getCategoriaRendimento().getTransacao(i).getMontante());
                 tvDataTransacao.setText("" + gestDados.getCategoriaRendimento().getTransacao(i).getData());
+                dAux = gestDados.getCategoriaDespesas(categoria).getTransacao(i).getData();
+                tvDataTransacao.setText("" + df.format(dAux));
+                } catch (InvalidCategoryException e) {
+                    e.printStackTrace();
+                }
             }
 
             btnEdite.setOnClickListener(new View.OnClickListener() {

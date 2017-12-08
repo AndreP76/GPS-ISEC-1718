@@ -182,7 +182,19 @@ public class InserirActivity extends AppCompatActivity {
                 Log.e("[INSERIR] :: ","Programmers fix this plz. Invalid category on adding new transaction");
             }
         }
-        finish();
+        //finish();
+
+        Intent intent = new Intent(this, InfoDetalhada.class);
+        intent.putExtra("GESTAO",gd);
+        intent.putExtra("CATEGORIA",categoria);
+        if (categoria.equals(Dados.RENDIMENTOS_KEY)) {
+            intent.putExtra("TIPO",true);
+        }
+        else
+        {
+            intent.putExtra("TIPO",false);
+        }
+        startActivity(intent);
     }
 
     public class DecimalDigitsInputFilter implements InputFilter {
