@@ -88,14 +88,13 @@ public class InfoDetalhada extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-
-
+        //TODO : TODOS REVER/RESCREVER ESTA PARTE
         //ver o que lancar para criar transacao;
         //atencao que temos criar e editar
         if (item.getItemId()==R.id.criaTransacao) {
-            Intent intent = new Intent(this,/*insereActivity*/.class);         //// nao sei o que por para
-            intent.putExtras("GD",gestDados);                                ///// lançar a atividade
-            intent.putExtra("TR");                                             //   para criar uma nova transacao
+            Intent intent = new Intent(this,InserirActivity.class);         //// nao sei o que por para
+            intent.putExtra("GD",gestDados);                                ///// lançar a atividade
+            //intent.putExtra("TR"); << para criar nova transação n é usado //   para criar uma nova transacao
             startActivity(intent);
 
         }else if(item.getItemId()==R.id.EditaOrcamento) {
@@ -132,15 +131,8 @@ public class InfoDetalhada extends AppCompatActivity {
 
             // show it
             alertDialog.show();
-
-
-
         }
-
-
-
         return super.onOptionsItemSelected(item);
-
     }
 
     class lvAdapter extends BaseAdapter{
@@ -213,22 +205,21 @@ public class InfoDetalhada extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     if(!isRendimento) {
-                        try {
-
-                            Intent intent = new Intent(this,/*insereActivity*/.class);
-                            intent.putExtras("GD",gestDados);
+                        /*try {
+                        //TODO : NUNO E BRUNO VERIFIQUEM ESTES INTENTS
+                            Intent intent = new Intent(this,InserirActivity.class);
+                            intent.putExtra("GD",gestDados);
                             intent.putExtra("TR",gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(posicao));
                             startActivity(intent);
                         } catch (InvalidCategoryException e) {
                             e.printStackTrace();
-                        }
+                        }*/
                     }
                     else{
-                        Intent intent = new Intent(this,/*insereActivity*/.class);
-                        intent.putExtras("GD",gestDados);
+                        /*Intent intent = new Intent(this,InserirActivity.class);
+                        intent.putExtra("GD",gestDados);
                         intent.putExtra("TR",gestDados.getCategoriaRendimento().getListaDeTransacoes().get(posicao));                            startActivity(intent);
-                        startActivity(intent);
-
+                        startActivity(intent);*/
                     }
                 }
             });
