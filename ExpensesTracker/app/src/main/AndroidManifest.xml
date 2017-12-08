@@ -12,7 +12,8 @@
         <activity
             android:name=".InformacaoGeral"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".InfoDetalhada"></activity>
+        <activity android:name=".InserirActivity" ></activity>
     </application>
 
 </manifest>
