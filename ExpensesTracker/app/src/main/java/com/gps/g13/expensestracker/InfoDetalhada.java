@@ -19,7 +19,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.gps.g13.expensestracker.gestaodedados.CategoriaDespesas;
 import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 import com.gps.g13.expensestracker.gestaodedados.ListaNomesCategoriasDespesas;
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidAmmountException;
@@ -59,8 +61,8 @@ public class InfoDetalhada extends AppCompatActivity {
 
             try {
                 tvCategoria.setText(gestDados.getCategoriaDespesas(categoria).getNome());
-                tvSubTitulo.setText("Orcamento: " + "falta metodo para pedir orcamento" + "€");  //falta metodo para pedir orcamento!!!
-                tvRodape.setText("Orcamento Restante " + gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes());
+                tvSubTitulo.setText(getResources().getString(R.string.orcamento) + ((CategoriaDespesas)gestDados.getCategoriaDespesas(categoria)).getOrcamento() + getResources().getString(R.string.unidade_monetaria));
+                tvRodape.setText(String.format("%s%s", getResources().getString(R.string.orcamento_restante), gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes()));
 
             } catch (InvalidCategoryException e) {
                 e.printStackTrace();
@@ -69,9 +71,9 @@ public class InfoDetalhada extends AppCompatActivity {
 
             MenuItem item = (MenuItem) findViewById(R.id.EditaOrcamento);
             item.setVisible(false);
-            tvCategoria.setText("Rendimentos");
-            tvRodape.setText("Dinheiro Total: " + "falta metodo para pedir dinheiro total" + "€");  // falta metodo para pedir dinheiro total
-            tvRodape.setText("Orcamento disponível: " + gestDados.getCategoriaRendimento().getResumoDeTransacoes());
+            tvCategoria.setText(gestDados.getCategoriaRendimento().getNome());
+            tvRodape.setText(getResources().getString(R.string.dinheiro_total) + gestDados.getCategoriaRendimento().getResumoDeTransacoes() + getResources().getString(R.string.unidade_monetaria));
+            tvRodape.setText(String.format("%s%s", getResources().getString(R.string.orcamento_disponivel), gestDados.getCategoriaRendimento().getResumoDeTransacoes()));
         }
 
         lv = (ListView) findViewById(R.id.lista_de_transacoes);
@@ -97,13 +99,21 @@ public class InfoDetalhada extends AppCompatActivity {
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
             // set title
-            alertDialogBuilder.setTitle("Orçamento");
+            alertDialogBuilder.setTitle(getResources().getString(R.string.orcamento));
 
             final EditText input = new EditText(InfoDetalhada.this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);
             input.setLayoutParams(lp);
+            Double orcamento = -1.0;
+            try {
+                orcamento = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento();
+            } catch (InvalidCategoryException e) {
+                e.printStackTrace();
+            }
+            input.setText(String.format("%s", orcamento));    // mostrar o valor do orcamento atual
+
             alertDialogBuilder.setView(input); // uncomment this line
 
             // set dialog message
@@ -113,10 +123,11 @@ public class InfoDetalhada extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             try {
                                 gestDados.editarOrcamento(categoria, Double.parseDouble(input.getText().toString()));
+                                tvSubTitulo.setText(getResources().getString(R.string.orcamento) + ((CategoriaDespesas)gestDados.getCategoriaDespesas(categoria)).getOrcamento() + getResources().getString(R.string.unidade_monetaria));
                             } catch (InvalidCategoryException e) {
                                 e.printStackTrace();
-                            } catch (InvalidAmmountException e) {
-                                e.printStackTrace();
+                            } catch (InvalidAmmountException | NumberFormatException e) {
+                                Toast.makeText(context, "Isso não é um numero valído", Toast.LENGTH_SHORT).show();
                             }
                         }
                     })
