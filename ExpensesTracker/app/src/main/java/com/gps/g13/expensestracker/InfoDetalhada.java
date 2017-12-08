@@ -301,12 +301,13 @@ public class InfoDetalhada extends AppCompatActivity
                                 public void onClick(DialogInterface dialog, int id) {
                                     try {
                                         if (!isRendimento) {
-                                            gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().remove(posicao);
                                             gestDados.removeTransacao(gestDados.getCategoriaDespesas(categoria).getNome(), gestDados.getCategoriaDespesas(categoria).getTransacao(posicao).getNome());
+                                            tvRodape.setText(String.format("%s%s", getResources().getString(R.string.orcamento_restante), gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes()));
                                         } else {
-                                            gestDados.getCategoriaRendimento().getListaDeTransacoes().remove(posicao);
                                             gestDados.removeTransacao(gestDados.getCategoriaRendimento().getNome(), gestDados.getCategoriaRendimento().getTransacao(posicao).getNome());
+                                            tvRodape.setText(String.format("%s%s", getResources().getString(R.string.orcamento_disponivel), gestDados.getCategoriaRendimento().getResumoDeTransacoes()));
                                         }
+                                        notifyDataSetChanged();
                                     } catch (InvalidCategoryException e) {
                                         e.printStackTrace();
                                     } catch (InvalidTransactionException e) {
