@@ -280,14 +280,11 @@ public class InfoDetalhada extends AppCompatActivity
                     return null;
                 }
             } else {
-                try {
                     tv_nomeTransacao.setText(gestDados.getCategoriaRendimento().getTransacao(i).getNome());
                     tvValorTransacao.setText("" + gestDados.getCategoriaRendimento().getTransacao(i).getMontante());
-                    dAux = gestDados.getCategoriaDespesas(categoria).getTransacao(i).getData();
+                    dAux = gestDados.getCategoriaRendimento().getTransacao(i).getData();
                     tvDataTransacao.setText("" + df.format(dAux));
-                } catch (InvalidCategoryException e) {
-                    e.printStackTrace();
-                }
+
             }
 
             btnEdite.setOnClickListener(new View.OnClickListener() {
