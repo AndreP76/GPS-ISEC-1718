@@ -2,12 +2,10 @@ package com.gps.g13.expensestracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -20,10 +18,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class InformacaoGeral extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private static GestorDados gestorDados;
     private TextView tvOrcamentoTotal;
     private TextView tvDinheiroGasto;
     private TextView tvBalanco;
-    private static GestorDados gestorDados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +53,9 @@ public class InformacaoGeral extends AppCompatActivity implements NavigationView
                 dinheiroGasto += c.getResumoDeTransacoes();
             }
         }
-        if(dinheiroGasto != 0) {
+        /*if(dinheiroGasto != 0) {
             dinheiroGasto = -dinheiroGasto;
-        }
+        }*/
 
         balanco = orcamento - dinheiroGasto;
 
