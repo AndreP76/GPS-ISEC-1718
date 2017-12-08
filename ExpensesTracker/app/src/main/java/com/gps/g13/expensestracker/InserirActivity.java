@@ -203,7 +203,7 @@ public class InserirActivity extends AppCompatActivity {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             Matcher matcher=mPattern.matcher(dest);
-            if(!matcher.matches())
+            if(!matcher.matches()){
                 return "";
             }
             return null;
