@@ -199,7 +199,7 @@ public class InfoDetalhada extends AppCompatActivity
             intent.putExtra("TIPO",false);
             intent.putExtra("CATEGORIA","Outros");
         }
-
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
