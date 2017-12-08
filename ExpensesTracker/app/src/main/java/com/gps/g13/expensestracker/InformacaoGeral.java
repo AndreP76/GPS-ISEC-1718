@@ -30,7 +30,7 @@ public class InformacaoGeral extends AppCompatActivity implements NavigationView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacao_geral);
 
-        gestorDados = ExpensesTracker.getGestorDadosGlobal();
+        gestorDados = ExpensesTracker.getGestorDadosGlobal(this);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -143,4 +143,15 @@ public class InformacaoGeral extends AppCompatActivity implements NavigationView
         return true;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ExpensesTracker.getGestorDadosGlobal(this).guardaDados();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ExpensesTracker.getGestorDadosGlobal(this).guardaDados();
+    }
 }

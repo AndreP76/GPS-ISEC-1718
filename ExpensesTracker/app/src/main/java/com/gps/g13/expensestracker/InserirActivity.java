@@ -89,7 +89,7 @@ public class InserirActivity extends AppCompatActivity {
 
 
         transacaoEditar = (Transacao) extras.getSerializable("TR");
-        gd = ExpensesTracker.getGestorDadosGlobal();/*(GestorDados)extras.getSerializable("GD");*/
+        gd = ExpensesTracker.getGestorDadosGlobal(this);/*(GestorDados)extras.getSerializable("GD");*/
         if(transacaoEditar != null) {//modo de edicao
             Calendar time = Calendar.getInstance(); //variavel aux so' para converter
             time.setTimeInMillis(transacaoEditar.getData().getTime());
@@ -187,6 +187,18 @@ public class InserirActivity extends AppCompatActivity {
             }
         }
         finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ExpensesTracker.getGestorDadosGlobal(this).guardaDados();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ExpensesTracker.getGestorDadosGlobal(this).guardaDados();
     }
 
     public class DecimalDigitsInputFilter implements InputFilter {

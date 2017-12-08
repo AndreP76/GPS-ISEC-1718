@@ -55,6 +55,18 @@ public class InfoDetalhada extends AppCompatActivity
     private ListView lv;
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        ExpensesTracker.getGestorDadosGlobal(this).guardaDados();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ExpensesTracker.getGestorDadosGlobal(this).guardaDados();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_detalhada);
@@ -68,7 +80,7 @@ public class InfoDetalhada extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
 
-        gestDados = ExpensesTracker.getGestorDadosGlobal();//(GestorDados) extras.getSerializable("GESTAO");
+        gestDados = ExpensesTracker.getGestorDadosGlobal(this);//(GestorDados) extras.getSerializable("GESTAO");
         isRendimento = extras.getBoolean("TIPO");
         if (!isRendimento) {
             categoria = extras.getString("CATEGORIA");

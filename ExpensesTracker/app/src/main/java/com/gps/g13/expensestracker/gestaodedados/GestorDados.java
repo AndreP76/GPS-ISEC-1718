@@ -41,6 +41,11 @@ public class GestorDados implements Serializable {
     public GestorDados(Context c) {
         BACKUP_PATH = c.getFilesDir().toString() + "/settings.xml";
         STANDARD_PATH = c.getFilesDir().toString() + "/data.bin";
+        this.data = readDataFromFile(STANDARD_PATH,true);
+        if(this.data == null) {
+            this.data = new Dados();
+            Log.e("[GESTOR] :: ","data ficou null depois de ler de ficheiro");
+        }
     }
 
     private Dados readDataFromBackupFile(String originFile) {
@@ -140,17 +145,17 @@ public class GestorDados implements Serializable {
     public void guardaDados() {
         writeDataToFile(STANDARD_PATH);
         Dados d = readDataFromFile(STANDARD_PATH, false);
-        if (d != null && d.equals(data)) {
+        if (d != null/* && d.equals(data)*/) {
             Log.v("[GESTOR] :: ", "Data integrity confirmed. Replacing backup file");
             writeDataToFile(BACKUP_PATH);
         } else {
             if (d == null) {
                 Log.e("[GESTOR] :: ", "Reading from just written data returned null. Overriding with backup file");
                 overrideFileWithBackup(STANDARD_PATH);
-            } else if (!d.equals(data)) {
+            } /*else if (!d.equals(data)) {
                 Log.w("[GESTOR] :: ", "Reading from just written data returned a different value from expected. Overriding with backup file");
                 overrideFileWithBackup(STANDARD_PATH);
-            }
+            }*/
         }
     }
 
