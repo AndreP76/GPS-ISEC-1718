@@ -68,7 +68,7 @@ public class Transacao implements Serializable {
         }
     }
 
-    public Object getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 }

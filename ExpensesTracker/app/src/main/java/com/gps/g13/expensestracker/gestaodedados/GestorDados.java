@@ -14,10 +14,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class GestorDados {
+public class GestorDados implements Serializable{
     private static final String BACKUP_PATH = "";
     private static final String STANDARD_PATH = "";
     private Dados data;
