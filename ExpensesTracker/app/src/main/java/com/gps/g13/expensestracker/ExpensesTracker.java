@@ -12,6 +12,9 @@ import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 
 //TODO : O calculo do orçamento restante esta mal, devolve sempre -0
 //TODO : A vista das categorias nunca atualiza
+//TODO : As datas aparecem com o mês anterior
+//TODO : Datas na categoria rendimentos mal formatadas
+//TODO : Rever formatações de todas as strings
 
 public class ExpensesTracker extends Application {
     static GestorDados gd;
