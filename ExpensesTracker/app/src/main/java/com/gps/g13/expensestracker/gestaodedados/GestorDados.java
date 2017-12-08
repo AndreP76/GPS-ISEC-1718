@@ -1,9 +1,6 @@
 package com.gps.g13.expensestracker.gestaodedados;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidAmmountException;
@@ -30,8 +27,9 @@ public class GestorDados implements Serializable {
     public GestorDados(String dataFilePath) {
 
         this.data = readDataFromFile(dataFilePath, true);
-        if (this.data == null)
+        if (this.data == null) {
             this.data = new Dados();
+        }
     }
 
     public GestorDados(Dados data) {
@@ -41,10 +39,10 @@ public class GestorDados implements Serializable {
     public GestorDados(Context c) {
         BACKUP_PATH = c.getFilesDir().toString() + "/settings.xml";
         STANDARD_PATH = c.getFilesDir().toString() + "/data.bin";
-        this.data = readDataFromFile(STANDARD_PATH,true);
-        if(this.data == null) {
+        this.data = readDataFromFile(STANDARD_PATH, true);
+        if (this.data == null) {
             this.data = new Dados();
-            Log.e("[GESTOR] :: ","data ficou null depois de ler de ficheiro");
+            Log.e("[GESTOR] :: ", "data ficou null depois de ler de ficheiro");
         }
     }
 
