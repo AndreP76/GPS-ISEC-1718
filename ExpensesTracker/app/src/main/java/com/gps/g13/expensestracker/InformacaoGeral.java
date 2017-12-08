@@ -2,45 +2,66 @@ package com.gps.g13.expensestracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.gps.g13.expensestracker.gestaodedados.Categoria;
+import com.gps.g13.expensestracker.gestaodedados.CategoriaRendimento;
+import com.gps.g13.expensestracker.gestaodedados.GestorDados;
+
+import java.util.List;
 
 public class InformacaoGeral extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private TextView tvOrcamentoTotal;
+    private TextView tvDinheiroGasto;
+    private TextView tvBalanco;
+    private GestorDados gestorDados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacao_geral);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        gestorDados = new GestorDados();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        tvOrcamentoTotal = (TextView) findViewById(R.id.tv_orcamentoTotal);
+        tvDinheiroGasto = (TextView) findViewById(R.id.tv_dinheiroGasto);
+        tvBalanco = (TextView) findViewById(R.id.balanco);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        double orcamento = gestorDados.getCategoriaRendimento().getResumoDeTransacoes();
+        double dinheiroGasto = 0.0;
+        double balanco;
+
+        List<Categoria> categorias = gestorDados.getCategorias();
+        for (Categoria c : categorias) {
+            if(!c.getNome().equalsIgnoreCase(CategoriaRendimento.NOME_RENDIMENTO)) {
+                dinheiroGasto += c.getResumoDeTransacoes();
+            }
+        }
+        dinheiroGasto = -dinheiroGasto;
+
+        balanco = orcamento - dinheiroGasto;
+
+        tvOrcamentoTotal.setText(getResources().getString(R.string.orcamentototal) + orcamento + getResources().getString(R.string.unidade_monetaria));
+        tvDinheiroGasto.setText(getResources().getString(R.string.dinheiroGasto) + dinheiroGasto + getResources().getString(R.string.unidade_monetaria));
+        tvBalanco.setText(getResources().getString(R.string.balanco) + balanco + getResources().getString(R.string.unidade_monetaria));
     }
 
     @Override
@@ -75,25 +96,42 @@ public class InformacaoGeral extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent intent = new Intent(this, InfoDetalhada.class);
+        intent.putExtra("GESTAO",gestorDados);
+        if (id == R.id.nav_rendimentos) {
+            intent.putExtra("TIPO",true);
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_alimentacao) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Alimentação");
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_alojamento) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Alojamento");
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_transportes) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Transportes");
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_universidade) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Universidade");
 
+        } else if (id == R.id.nav_lazer) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Lazer");
+
+        } else if (id == R.id.nav_outros) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Outros");
         }
+
+        startActivity(intent);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
