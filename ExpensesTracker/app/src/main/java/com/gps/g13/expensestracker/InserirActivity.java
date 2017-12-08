@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gps.g13.expensestracker.gestaodedados.Categoria;
 import com.gps.g13.expensestracker.gestaodedados.Dados;
 import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 import com.gps.g13.expensestracker.gestaodedados.Transacao;
@@ -25,15 +24,11 @@ import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidDateException
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidNameException;
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidTransactionException;
 
-import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Date;
-import java.util.Date;
-import java.util.SimpleTimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,55 +50,56 @@ public class InserirActivity extends AppCompatActivity {
 
     Date date;
     Calendar cal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inserir);
         //CODIGO GERADO AUTOMATICAMENTE PELO ANDROID STUDIO
         //INICIO
-        try{  //Remover a actionbar
+        try {  //Remover a actionbar
             ActionBar supportBar = getSupportActionBar();
-            if(supportBar != null) {
+            if (supportBar != null) {
                 supportBar.hide();
             }
-        }catch (Exception e){
-            Log.i("inserirNova",e.getMessage());
+        } catch (Exception e) {
+            Log.i("inserirNova", e.getMessage());
         }
 
         //FIM
 
-        transacaoNome =(EditText) findViewById(R.id.et_InserirTransacao_nome);
-        transacaoValor =(EditText) findViewById(R.id.et_InserirTransacao_valor);
+        transacaoNome = (EditText) findViewById(R.id.et_InserirTransacao_nome);
+        transacaoValor = (EditText) findViewById(R.id.et_InserirTransacao_valor);
 
         //transacaoValor.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(99,2)});
 
         transacaoDia = (EditText) findViewById(R.id.et_InserirTransacao_data_dia);
         transacaoMes = (TextView) findViewById(R.id.tv_InserirTransacao_data_mes);
-        transacaoAno= (TextView) findViewById(R.id.tv_InserirTransacao_data_ano);;
-        btnOK=(Button)findViewById(R.id.btn_InserirTransacao_ok);
-        tipo =(TextView) findViewById(R.id.tv_inserir_tipo);
-        categoria=(TextView) findViewById(R.id.tv_inserir_Categoria);
+        transacaoAno = (TextView) findViewById(R.id.tv_InserirTransacao_data_ano);
 
-        Bundle extras=getIntent().getExtras();
+        btnOK = (Button) findViewById(R.id.btn_InserirTransacao_ok);
+        tipo = (TextView) findViewById(R.id.tv_inserir_tipo);
+        categoria = (TextView) findViewById(R.id.tv_inserir_Categoria);
 
+        Bundle extras = getIntent().getExtras();
 
 
         transacaoEditar = (Transacao) extras.getSerializable("TR");
         gd = ExpensesTracker.getGestorDadosGlobal(this);/*(GestorDados)extras.getSerializable("GD");*/
-        if(transacaoEditar != null) {//modo de edicao
+        if (transacaoEditar != null) {//modo de edicao
             Calendar time = Calendar.getInstance(); //variavel aux so' para converter
             time.setTimeInMillis(transacaoEditar.getData().getTime());
 
-            transacaoDia.setText(""+time.get(Calendar.DAY_OF_MONTH));
-            transacaoAno.setText(""+time.get(Calendar.YEAR));
-            transacaoMes.setText(""+(time.get(Calendar.MONTH)+1));
+            transacaoDia.setText("" + time.get(Calendar.DAY_OF_MONTH));
+            transacaoAno.setText("" + time.get(Calendar.YEAR));
+            transacaoMes.setText("" + (time.get(Calendar.MONTH) + 1));
             transacaoNome.setText(transacaoEditar.getNome());
             transacaoValor.setText(transacaoEditar.getMontante() + "");
 
             categoria.setText(transacaoEditar.getCategoria().getNome());
             categoriaName = transacaoEditar.getCategoria().getNome();
             tipo.setText(R.string.editTransacao);
-        }else {//modo de adição
+        } else {//modo de adição
             categoriaName = (String) extras.get("CATEGORIA");
             if (categoriaName != null && categoriaName.equals(Dados.RENDIMENTOS_KEY)) {
                 tipo.setText(R.string.NovoRendimento);
@@ -112,23 +108,23 @@ public class InserirActivity extends AppCompatActivity {
                 tipo.setText(R.string.NovaDespesa);
                 categoria.setText(categoriaName);
             } else {
-                Log.e("[INSERIR] :: ","Received a null category");
+                Log.e("[INSERIR] :: ", "Received a null category");
                 finish();
             }
 
             //meter a data atual nas textViews correspondentes
-            date= new Date();
+            date = new Date();
             cal = Calendar.getInstance();
             cal.setTime(date);
-            int mes=cal.get(Calendar.MONTH);
+            int mes = cal.get(Calendar.MONTH);
             mes++;//mes vem de 0 a 11, logo o mes++
 
-            transacaoMes.setText(mes+"");
-            transacaoAno.setText(cal.get(Calendar.YEAR)+"");
+            transacaoMes.setText(mes + "");
+            transacaoAno.setText(cal.get(Calendar.YEAR) + "");
         }
     }
 
-    public void onClickOK(View v){
+    public void onClickOK(View v) {
         Date data;
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -149,41 +145,40 @@ public class InserirActivity extends AppCompatActivity {
                 data = new Date();
             }
 
-        }catch (RuntimeException rEx){
-            Log.w("[INSERIR] :: ","Transaction date parsing failed. Assuming today.");
+        } catch (RuntimeException rEx) {
+            Log.w("[INSERIR] :: ", "Transaction date parsing failed. Assuming today.");
             data = new Date();
         }
-
 
 
         String categoria = categoriaName;
         String Nome = transacaoNome.getText().toString();
         double Montante = Double.parseDouble(transacaoValor.getText().toString());
-        if(transacaoEditar != null){//modo edição
+        if (transacaoEditar != null) {//modo edição
             try {
-                gd.editarTransacao(categoria,transacaoEditar.getNome(),Nome,Montante,data);
+                gd.editarTransacao(categoria, transacaoEditar.getNome(), Nome, Montante, data);
             } catch (InvalidCategoryException e) {
-                Log.e("[INSERIR] :: ","Edited transaction category is invalid!");
-                Toast.makeText(this,"Ocorreu um erro ao editar a transação selecionada. Por favor tente novamente",Toast.LENGTH_SHORT).show();
+                Log.e("[INSERIR] :: ", "Edited transaction category is invalid!");
+                Toast.makeText(this, "Ocorreu um erro ao editar a transação selecionada. Por favor tente novamente", Toast.LENGTH_SHORT).show();
                 finish();
             } catch (InvalidTransactionException e) {
-                Log.e("[INSERIR] :: ","Edited transaction is invalid!");
-                Toast.makeText(this,"Ocorreu um erro ao editar a transação selecionada. Por favor tente novamente",Toast.LENGTH_SHORT).show();
+                Log.e("[INSERIR] :: ", "Edited transaction is invalid!");
+                Toast.makeText(this, "Ocorreu um erro ao editar a transação selecionada. Por favor tente novamente", Toast.LENGTH_SHORT).show();
                 finish();
             }
-        }else{
+        } else {
             try {
-                gd.adicionaTransacao(categoria,Nome,Montante,data);
+                gd.adicionaTransacao(categoria, Nome, Montante, data);
             } catch (InvalidNameException e) {
-                Toast.makeText(this,"Este nome não é aceitavel para a transação. Mude o nome e tente novamente",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Este nome não é aceitavel para a transação. Mude o nome e tente novamente", Toast.LENGTH_SHORT).show();
             } catch (InvalidAmmountException e) {
-                Toast.makeText(this,"Este montante não é valido. Mude o valor e tente novamente",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Este montante não é valido. Mude o valor e tente novamente", Toast.LENGTH_SHORT).show();
             } catch (InvalidDateException e) {
-                Toast.makeText(this,"Esta data não é aceitavel para a transação. Mude a data e tente novamente",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Esta data não é aceitavel para a transação. Mude a data e tente novamente", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             } catch (InvalidCategoryException e) {
-                Toast.makeText(this,"Erro desconhecido na adição de uma transação. Tente novamente.",Toast.LENGTH_SHORT).show();
-                Log.e("[INSERIR] :: ","Programmers fix this plz. Invalid category on adding new transaction");
+                Toast.makeText(this, "Erro desconhecido na adição de uma transação. Tente novamente.", Toast.LENGTH_SHORT).show();
+                Log.e("[INSERIR] :: ", "Programmers fix this plz. Invalid category on adding new transaction");
             }
         }
         finish();
@@ -205,15 +200,16 @@ public class InserirActivity extends AppCompatActivity {
 
         Pattern mPattern;
 
-        public DecimalDigitsInputFilter(int digitsBeforeZero,int digitsAfterZero) {
-            mPattern=Pattern.compile("[0-9]{0," + (digitsBeforeZero-1) + "}+((\\.[0-9]{0," + (digitsAfterZero-1) + "})?)||(\\.)?");
+        public DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero) {
+            mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
         }
 
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            Matcher matcher=mPattern.matcher(dest);
-            if(!matcher.matches())
+            Matcher matcher = mPattern.matcher(dest);
+            if (!matcher.matches()) {
                 return "";
+            }
             return null;
         }
 
