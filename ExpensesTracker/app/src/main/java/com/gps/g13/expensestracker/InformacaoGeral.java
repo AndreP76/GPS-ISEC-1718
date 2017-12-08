@@ -16,6 +16,7 @@ import com.gps.g13.expensestracker.gestaodedados.CategoriaRendimento;
 import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 
 import java.util.List;
+import java.util.Locale;
 
 public class InformacaoGeral extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -55,13 +56,18 @@ public class InformacaoGeral extends AppCompatActivity
                 dinheiroGasto += c.getResumoDeTransacoes();
             }
         }
-        dinheiroGasto = -dinheiroGasto;
+        if(dinheiroGasto != 0) {
+            dinheiroGasto = -dinheiroGasto;
+        }
 
         balanco = orcamento - dinheiroGasto;
 
-        tvOrcamentoTotal.setText(getResources().getString(R.string.orcamentototal) + orcamento + getResources().getString(R.string.unidade_monetaria));
-        tvDinheiroGasto.setText(getResources().getString(R.string.dinheiroGasto) + dinheiroGasto + getResources().getString(R.string.unidade_monetaria));
-        tvBalanco.setText(getResources().getString(R.string.balanco) + balanco + getResources().getString(R.string.unidade_monetaria));
+        String str = String.format(Locale.getDefault(),"%s %.2f %s", getResources().getString(R.string.orcamentototal), orcamento, getResources().getString(R.string.unidade_monetaria));
+        tvOrcamentoTotal.setText(str);
+        str = String.format(Locale.getDefault(),"%s %.2f %s", getResources().getString(R.string.dinheiroGasto), dinheiroGasto, getResources().getString(R.string.unidade_monetaria));
+        tvDinheiroGasto.setText(str);
+        str = String.format(Locale.getDefault(), "%s %.2f %s", getResources().getString(R.string.balanco), balanco, getResources().getString(R.string.unidade_monetaria));
+        tvBalanco.setText(str);
     }
 
     @Override
