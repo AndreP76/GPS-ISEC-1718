@@ -91,9 +91,13 @@ public class InserirActivity extends AppCompatActivity {
         transacaoEditar = (Transacao) extras.getSerializable("TR");
         gd = (GestorDados)extras.getSerializable("GD");
         if(transacaoEditar != null) {//modo de edicao
-            transacaoDia.setText(transacaoEditar.getData().getDay());
-            transacaoAno.setText(transacaoEditar.getData().getYear());
-            transacaoMes.setText(transacaoEditar.getData().getMonth());
+
+            Calendar time = Calendar.getInstance(); //variavel aux so' para converter
+            time.setTimeInMillis(transacaoEditar.getData().getTime());
+
+            transacaoDia.setText(""+time.get(Calendar.DAY_OF_MONTH));
+            transacaoAno.setText(""+time.get(Calendar.YEAR));
+            transacaoMes.setText(""+time.get(Calendar.MONTH));
             transacaoNome.setText(transacaoEditar.getNome());
             transacaoValor.setText(transacaoEditar.getMontante() + "");
 
@@ -182,19 +186,7 @@ public class InserirActivity extends AppCompatActivity {
                 Log.e("[INSERIR] :: ","Programmers fix this plz. Invalid category on adding new transaction");
             }
         }
-        //finish();
-
-        Intent intent = new Intent(this, InfoDetalhada.class);
-        intent.putExtra("GESTAO",gd);
-        intent.putExtra("CATEGORIA",categoria);
-        if (categoria.equals(Dados.RENDIMENTOS_KEY)) {
-            intent.putExtra("TIPO",true);
-        }
-        else
-        {
-            intent.putExtra("TIPO",false);
-        }
-        startActivity(intent);
+        finish();
     }
 
     public class DecimalDigitsInputFilter implements InputFilter {
