@@ -33,7 +33,7 @@ public class CategoriaDespesas extends Categoria {
                 soma += lista.get(i).getMontante();
             }
         }
-        return -soma;
+        return soma;
     }
 
     //vai retornar o orcamento que ainda resta da respetiva Despesa
