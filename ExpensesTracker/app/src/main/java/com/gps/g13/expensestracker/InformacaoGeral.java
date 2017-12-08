@@ -137,6 +137,11 @@ public class InformacaoGeral extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    public void onClickk(View v){
+        Intent intent = new Intent(this,InserirActivity.class);
+        intent.putExtra("TIPO","Despesa");
+        intent.putExtra("CATEGORIA","Alojamento");
+        startActivity(intent);
 
-
+    }
 }
