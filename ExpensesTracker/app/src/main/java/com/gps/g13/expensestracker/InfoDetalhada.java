@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gps.g13.expensestracker.gestaodedados.CategoriaDespesas;
+import com.gps.g13.expensestracker.gestaodedados.Dados;
 import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 import com.gps.g13.expensestracker.gestaodedados.ListaNomesCategoriasDespesas;
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidAmmountException;
@@ -77,6 +78,7 @@ public class InfoDetalhada extends AppCompatActivity
                 e.printStackTrace();
             }
         } else {
+            categoria = Dados.RENDIMENTOS_KEY;
             tvCategoria.setText(gestDados.getCategoriaRendimento().getNome());
             tvRodape.setText(getResources().getString(R.string.dinheiro_total) + gestDados.getCategoriaRendimento().getResumoDeTransacoes() + getResources().getString(R.string.unidade_monetaria));
             tvRodape.setText(String.format("%s%s", getResources().getString(R.string.orcamento_disponivel), gestDados.getCategoriaRendimento().getResumoDeTransacoes()));
