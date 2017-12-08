@@ -96,7 +96,7 @@ public class InserirActivity extends AppCompatActivity {
 
             transacaoDia.setText(""+time.get(Calendar.DAY_OF_MONTH));
             transacaoAno.setText(""+time.get(Calendar.YEAR));
-            transacaoMes.setText(""+time.get(Calendar.MONTH));
+            transacaoMes.setText(""+(time.get(Calendar.MONTH)+1));
             transacaoNome.setText(transacaoEditar.getNome());
             transacaoValor.setText(transacaoEditar.getMontante() + "");
 
