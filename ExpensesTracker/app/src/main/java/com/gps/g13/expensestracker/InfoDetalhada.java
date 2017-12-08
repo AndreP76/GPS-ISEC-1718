@@ -45,6 +45,7 @@ public class InfoDetalhada extends AppCompatActivity
     private TextView tvSubTitulo;
     private TextView tvRodape;
     private ListView lv;
+    private lvAdapter lva;
 
     @Override
     protected void onPause() {
@@ -94,10 +95,17 @@ public class InfoDetalhada extends AppCompatActivity
             tvRodape.setText(String.format("%s%s", getResources().getString(R.string.orcamento_disponivel), gestDados.getCategoriaRendimento().getResumoDeTransacoes()));
         }
 
+
         lv = (ListView) findViewById(R.id.lista_de_transacoes);
-        lv.setAdapter(new lvAdapter());
+        lva = new lvAdapter();
+        lv.setAdapter(lva);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        lva.notifyDataSetChanged();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

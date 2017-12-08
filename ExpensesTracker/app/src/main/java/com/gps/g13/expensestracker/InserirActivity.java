@@ -1,13 +1,10 @@
 package com.gps.g13.expensestracker;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gps.g13.expensestracker.gestaodedados.Categoria;
 import com.gps.g13.expensestracker.gestaodedados.Dados;
 import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 import com.gps.g13.expensestracker.gestaodedados.Transacao;
@@ -25,36 +21,29 @@ import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidDateException
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidNameException;
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidTransactionException;
 
-import org.w3c.dom.Text;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Date;
-import java.util.Date;
-import java.util.SimpleTimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InserirActivity extends AppCompatActivity {
 
+    Date date;
+    Calendar cal;
     private EditText transacaoNome;
     private EditText transacaoValor;
     private EditText transacaoDia;
     private TextView transacaoMes;
     private TextView transacaoAno;
     private Button btnOK;
-
     private TextView tipo;
     private TextView categoria;
-
     private String categoriaName;
     private Transacao transacaoEditar;
     private GestorDados gd;
 
-    Date date;
-    Calendar cal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,8 +142,6 @@ public class InserirActivity extends AppCompatActivity {
             Log.w("[INSERIR] :: ","Transaction date parsing failed. Assuming today.");
             data = new Date();
         }
-
-
 
         String categoria = categoriaName;
         String Nome = transacaoNome.getText().toString();
