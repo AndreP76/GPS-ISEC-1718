@@ -4,6 +4,9 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +33,8 @@ import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidTransactionEx
 
 import org.w3c.dom.Text;
 
-public class InfoDetalhada extends AppCompatActivity {
+public class InfoDetalhada extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private GestorDados gestDados;
     private String categoria;
@@ -68,9 +72,6 @@ public class InfoDetalhada extends AppCompatActivity {
                 e.printStackTrace();
             }
         } else {
-
-            MenuItem item = (MenuItem) findViewById(R.id.EditaOrcamento);
-            item.setVisible(false);
             tvCategoria.setText(gestDados.getCategoriaRendimento().getNome());
             tvRodape.setText(getResources().getString(R.string.dinheiro_total) + gestDados.getCategoriaRendimento().getResumoDeTransacoes() + getResources().getString(R.string.unidade_monetaria));
             tvRodape.setText(String.format("%s%s", getResources().getString(R.string.orcamento_disponivel), gestDados.getCategoriaRendimento().getResumoDeTransacoes()));
@@ -80,10 +81,62 @@ public class InfoDetalhada extends AppCompatActivity {
         lv.setAdapter(new lvAdapter());
     }
 
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        Intent intent = new Intent(this, InfoDetalhada.class);
+        intent.putExtra("GESTAO",gestDados);
+        if (id == R.id.nav_rendimentos) {
+            intent.putExtra("TIPO",true);
+
+
+        } else if (id == R.id.nav_alimentacao) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Alimentação");
+
+        } else if (id == R.id.nav_alojamento) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Alojamento");
+
+        } else if (id == R.id.nav_transportes) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Transportes");
+
+        } else if (id == R.id.nav_universidade) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Universidade");
+
+        } else if (id == R.id.nav_lazer) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Lazer");
+
+        } else if (id == R.id.nav_outros) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Outros");
+        }
+
+        startActivity(intent);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater mi = new MenuInflater(this);
-        mi.inflate(R.menu.informacao_detalhada_menu, menu);
+        mi.inflate(R.menu.informacao_detalhada_menu,menu);
+
+        //MenuItem item = (MenuItem) findViewById(R.id.EditaOrcamento);
+        if (isRendimento)
+        {
+            invalidateOptionsMenu();
+            MenuItem item = menu.findItem(R.id.EditaOrcamento);
+            item.setVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -94,6 +147,7 @@ public class InfoDetalhada extends AppCompatActivity {
         if (item.getItemId() == R.id.criaTransacao) {
             Intent intent = new Intent(this, InserirActivity.class);
             intent.putExtra("GD", gestDados);
+            intent.putExtra("CATEGORIA", categoria);
             startActivity(intent);
         } else if (item.getItemId() == R.id.EditaOrcamento) {
 

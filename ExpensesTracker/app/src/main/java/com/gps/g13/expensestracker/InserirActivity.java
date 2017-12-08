@@ -107,7 +107,6 @@ public class InserirActivity extends AppCompatActivity {
                 categoria.setText(categoriaName);
             } else {
                 Log.e("[INSERIR] :: ","Received a null category");
-                Log.i("[INSERIR] :: ","A culpa é do Nuno e do Bruno, passem as cenas em condições");
                 finish();
             }
 
