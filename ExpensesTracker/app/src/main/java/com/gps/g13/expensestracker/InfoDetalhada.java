@@ -211,30 +211,28 @@ public class InfoDetalhada extends AppCompatActivity
         public int getCount() {
             if (!isRendimento) {
                 try {
-                    gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().size();
+                    return gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().size();
                 } catch (InvalidCategoryException e) {
                     e.printStackTrace();
                     return 0;
                 }
             } else {
-                gestDados.getCategoriaRendimento().getListaDeTransacoes().size();
+                return gestDados.getCategoriaRendimento().getListaDeTransacoes().size();
             }
-            return 0;
         }
 
         @Override
         public Object getItem(int i) {
             if (!isRendimento) {
                 try {
-                    gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(i);
+                    return gestDados.getCategoriaDespesas(categoria).getTransacao(i);
                 } catch (InvalidCategoryException e) {
                     e.printStackTrace();
                     return null;
                 }
             } else {
-                gestDados.getCategoriaRendimento().getListaDeTransacoes().get(i);
+                return gestDados.getCategoriaRendimento().getTransacao(i);
             }
-            return null;
         }
 
         @Override
@@ -246,7 +244,7 @@ public class InfoDetalhada extends AppCompatActivity
         public View getView(int i, View view, ViewGroup viewGroup) {
             posicao = i;
             View linha = getLayoutInflater().inflate(R.layout.linha_da_lista_de_transacoes, null);
-            TextView tv_nomeTransacao = ((TextView) linha.findViewById(R.id.tv_nomeCategoria_infoDetalhada));
+            TextView tv_nomeTransacao = ((TextView) linha.findViewById(R.id.tv_nomeTransacao_InfoGeral));
             TextView tvValorTransacao = (TextView) linha.findViewById(R.id.tv_ValorTransacao_InfoGeral);
             TextView tvDataTransacao = (TextView) linha.findViewById(R.id.tv_DataTransacao_InfoGeral);
             Button btnRemove = (Button) linha.findViewById(R.id.btn_delete_linha);
@@ -254,18 +252,18 @@ public class InfoDetalhada extends AppCompatActivity
 
             if (!isRendimento) {
                 try {
-                    tv_nomeTransacao.setText(gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(i).getNome());
-                    tvValorTransacao.setText("" + gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(i).getMontante());
-                    tvDataTransacao.setText("" + gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(i).getData());
+                    tv_nomeTransacao.setText(gestDados.getCategoriaDespesas(categoria).getTransacao(i).getNome());
+                    tvValorTransacao.setText("" + gestDados.getCategoriaDespesas(categoria).getTransacao(i).getMontante());
+                    tvDataTransacao.setText("" + gestDados.getCategoriaDespesas(categoria).getTransacao(i).getData());
 
                 } catch (InvalidCategoryException e) {
                     e.printStackTrace();
                     return null;
                 }
             } else {
-                tv_nomeTransacao.setText(gestDados.getCategoriaRendimento().getListaDeTransacoes().get(i).getNome());
-                tvValorTransacao.setText("" + gestDados.getCategoriaRendimento().getListaDeTransacoes().get(i).getMontante());
-                tvDataTransacao.setText("" + gestDados.getCategoriaRendimento().getListaDeTransacoes().get(i).getData());
+                tv_nomeTransacao.setText(gestDados.getCategoriaRendimento().getTransacao(i).getNome());
+                tvValorTransacao.setText("" + gestDados.getCategoriaRendimento().getTransacao(i).getMontante());
+                tvDataTransacao.setText("" + gestDados.getCategoriaRendimento().getTransacao(i).getData());
             }
 
             btnEdite.setOnClickListener(new View.OnClickListener() {
@@ -276,12 +274,12 @@ public class InfoDetalhada extends AppCompatActivity
                     intent.putExtra("GD", gestDados);
                     if (!isRendimento) {
                         try {
-                            intent.putExtra("TR", gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(posicao));
+                            intent.putExtra("TR", gestDados.getCategoriaDespesas(categoria).getTransacao(posicao));
                         } catch (InvalidCategoryException e) {
                             e.printStackTrace();
                         }
                     } else {
-                        intent.putExtra("TR", gestDados.getCategoriaRendimento().getListaDeTransacoes().get(posicao));
+                        intent.putExtra("TR", gestDados.getCategoriaRendimento().getTransacao(posicao));
                     }
                     startActivity(intent);
                 }
@@ -304,10 +302,10 @@ public class InfoDetalhada extends AppCompatActivity
                                     try {
                                         if (!isRendimento) {
                                             gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().remove(posicao);
-                                            gestDados.removeTransacao(gestDados.getCategoriaDespesas(categoria).getNome(), gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(posicao).getNome());
+                                            gestDados.removeTransacao(gestDados.getCategoriaDespesas(categoria).getNome(), gestDados.getCategoriaDespesas(categoria).getTransacao(posicao).getNome());
                                         } else {
                                             gestDados.getCategoriaRendimento().getListaDeTransacoes().remove(posicao);
-                                            gestDados.removeTransacao(gestDados.getCategoriaRendimento().getNome(), gestDados.getCategoriaRendimento().getListaDeTransacoes().get(posicao).getNome());
+                                            gestDados.removeTransacao(gestDados.getCategoriaRendimento().getNome(), gestDados.getCategoriaRendimento().getTransacao(posicao).getNome());
                                         }
                                     } catch (InvalidCategoryException e) {
                                         e.printStackTrace();
