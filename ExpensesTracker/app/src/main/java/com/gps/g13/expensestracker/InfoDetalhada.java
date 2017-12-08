@@ -277,7 +277,6 @@ public class InfoDetalhada extends AppCompatActivity
                 try {
                 tv_nomeTransacao.setText(gestDados.getCategoriaRendimento().getTransacao(i).getNome());
                 tvValorTransacao.setText("" + gestDados.getCategoriaRendimento().getTransacao(i).getMontante());
-                tvDataTransacao.setText("" + gestDados.getCategoriaRendimento().getTransacao(i).getData());
                 dAux = gestDados.getCategoriaDespesas(categoria).getTransacao(i).getData();
                 tvDataTransacao.setText("" + df.format(dAux));
                 } catch (InvalidCategoryException e) {
