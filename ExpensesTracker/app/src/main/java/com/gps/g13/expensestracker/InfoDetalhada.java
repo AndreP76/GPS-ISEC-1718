@@ -1,17 +1,14 @@
 package com.gps.g13.expensestracker;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,12 +25,9 @@ import android.widget.Toast;
 import com.gps.g13.expensestracker.gestaodedados.CategoriaDespesas;
 import com.gps.g13.expensestracker.gestaodedados.Dados;
 import com.gps.g13.expensestracker.gestaodedados.GestorDados;
-import com.gps.g13.expensestracker.gestaodedados.ListaNomesCategoriasDespesas;
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidAmmountException;
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidCategoryException;
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidTransactionException;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,16 +36,14 @@ import java.util.Date;
 public class InfoDetalhada extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    //para dialogBox
+    final Context context = this;
     private GestorDados gestDados;
     private String categoria;
     private boolean isRendimento;
     private TextView tvCategoria;
     private TextView tvSubTitulo;
     private TextView tvRodape;
-
-    //para dialogBox
-    final Context context = this;
-
     private ListView lv;
 
     @Override
@@ -88,7 +80,9 @@ public class InfoDetalhada extends AppCompatActivity
             try {
                 tvCategoria.setText(gestDados.getCategoriaDespesas(categoria).getNome());
                 tvSubTitulo.setText(getResources().getString(R.string.orcamento) + ((CategoriaDespesas)gestDados.getCategoriaDespesas(categoria)).getOrcamento() + getResources().getString(R.string.unidade_monetaria));
-                tvRodape.setText(String.format("%s%s", getResources().getString(R.string.orcamento_restante), gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes()));
+                //TODO : HERE
+                double restante = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() - gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes();
+                tvRodape.setText(String.format("%s%s", getResources().getString(R.string.orcamento_restante), restante));
 
             } catch (InvalidCategoryException e) {
                 e.printStackTrace();
@@ -122,7 +116,7 @@ public class InfoDetalhada extends AppCompatActivity
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        //TODO : TODOS REVER/RESCREVER ESTA PARTE
+
         //ver o que lancar para criar transacao;
         //atencao que temos criar e editar
         if (item.getItemId() == R.id.criaTransacao) {
@@ -220,7 +214,7 @@ public class InfoDetalhada extends AppCompatActivity
     }
 
 
-    class lvAdapter extends BaseAdapter {
+    private class lvAdapter extends BaseAdapter {
         private int posicao;
 
         @Override

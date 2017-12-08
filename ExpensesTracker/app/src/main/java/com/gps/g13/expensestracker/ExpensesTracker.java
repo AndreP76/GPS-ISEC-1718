@@ -10,7 +10,7 @@ import com.gps.g13.expensestracker.gestaodedados.GestorDados;
  * Created by andre on 12/8/17.
  */
 
-//TODO : O calculo do orçamento restante esta mal, devolve sempre -0
+//TODO : O calculo do orçamento restante esta mal, devolve sempre negativo
 //TODO : A vista das categorias nunca atualiza
 //TODO : As datas aparecem com o mês anterior
 //TODO : Datas na categoria rendimentos mal formatadas
