@@ -9,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.gps.g13.expensestracker.gestaodedados.Categoria;
@@ -35,15 +34,13 @@ public class InformacaoGeral extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-    public void onclick(View v){
-        Intent intent = new Intent(this,InfoDetalhada.class);
-        startActivity(intent);
+
         tvOrcamentoTotal = (TextView) findViewById(R.id.tv_orcamentoTotal);
         tvDinheiroGasto = (TextView) findViewById(R.id.tv_dinheiroGasto);
         tvBalanco = (TextView) findViewById(R.id.balanco);
     }
-    
+
+
     @Override
     protected void onResume() {
         super.onResume();

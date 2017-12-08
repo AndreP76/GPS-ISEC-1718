@@ -18,13 +18,15 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class GestorDados implements Serializable{
+public class GestorDados implements Serializable {
     private static final String BACKUP_PATH = "";
     private static final String STANDARD_PATH = "";
     private Dados data;
 
     public GestorDados(String dataFilePath) {
         this.data = readDataFromFile(dataFilePath, true);
+        if (this.data == null)
+            this.data = new Dados();
     }
 
     public GestorDados(Dados data) {
@@ -73,6 +75,7 @@ public class GestorDados implements Serializable{
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return readDataFromBackupFile(dataFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
