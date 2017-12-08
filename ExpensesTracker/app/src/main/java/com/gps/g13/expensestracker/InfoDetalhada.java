@@ -203,6 +203,7 @@ public class InfoDetalhada extends AppCompatActivity
         return true;
     }
 
+
     class lvAdapter extends BaseAdapter {
         private int posicao;
 
@@ -245,17 +246,18 @@ public class InfoDetalhada extends AppCompatActivity
         public View getView(int i, View view, ViewGroup viewGroup) {
             posicao = i;
             View linha = getLayoutInflater().inflate(R.layout.linha_da_lista_de_transacoes, null);
-            TextView tv_nomeTransacao = (TextView) findViewById(R.id.tv_nomeCategoria_infoDetalhada);
-            TextView tvValorTransacao = (TextView) findViewById(R.id.tv_ValorTransacao_InfoGeral);
-            TextView tvDataTransacao = (TextView) findViewById(R.id.tv_DataTransacao_InfoGeral);
-            Button btnRemove = (Button) findViewById(R.id.btn_delete_linha);
-            Button btnEdite = (Button) findViewById(R.id.btn_edit_linha);
+            TextView tv_nomeTransacao = ((TextView) linha.findViewById(R.id.tv_nomeCategoria_infoDetalhada));
+            TextView tvValorTransacao = (TextView) linha.findViewById(R.id.tv_ValorTransacao_InfoGeral);
+            TextView tvDataTransacao = (TextView) linha.findViewById(R.id.tv_DataTransacao_InfoGeral);
+            Button btnRemove = (Button) linha.findViewById(R.id.btn_delete_linha);
+            Button btnEdite = (Button) linha.findViewById(R.id.btn_edit_linha);
 
             if (!isRendimento) {
                 try {
                     tv_nomeTransacao.setText(gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(i).getNome());
                     tvValorTransacao.setText("" + gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(i).getMontante());
                     tvDataTransacao.setText("" + gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(i).getData());
+
                 } catch (InvalidCategoryException e) {
                     e.printStackTrace();
                     return null;

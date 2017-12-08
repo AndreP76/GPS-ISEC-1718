@@ -27,6 +27,8 @@ import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidTransactionEx
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Date;
@@ -124,12 +126,32 @@ public class InserirActivity extends AppCompatActivity {
 
     public void onClickOK(View v){
         Date data;
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+
         try {
-            data = new Date(Integer.parseInt(transacaoAno.getText().toString()), Integer.parseInt(transacaoMes.getText().toString()), Integer.parseInt(transacaoDia.getText().toString()));
+            //o construtor assim é Deprecated.
+            //data = new Date(Integer.parseInt(transacaoAno.getText().toString()), Integer.parseInt(transacaoMes.getText().toString()), Integer.parseInt(transacaoDia.getText().toString()));
+
+            String dateString = Integer.parseInt(transacaoAno.getText().toString()) + "-" + Integer.parseInt(transacaoMes.getText().toString()) + "-" + Integer.parseInt(transacaoDia.getText().toString());
+
+            //data = new Date(Integer.parseInt(transacaoAno.getText().toString()), Integer.parseInt(transacaoMes.getText().toString()), Integer.parseInt(transacaoDia.getText().toString()));
+            try {
+                Date dAuxiliar = f.parse(dateString);
+                long milliseconds = dAuxiliar.getTime();
+                data = new Date();
+                data.setTime(milliseconds);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                data = new Date();
+            }
+
         }catch (RuntimeException rEx){
             Log.w("[INSERIR] :: ","Transaction date parsing failed. Assuming today.");
             data = new Date();
         }
+
+
+
         String categoria = categoriaName;
         String Nome = transacaoNome.getText().toString();
         double Montante = Double.parseDouble(transacaoValor.getText().toString());
@@ -160,6 +182,7 @@ public class InserirActivity extends AppCompatActivity {
                 Log.e("[INSERIR] :: ","Programmers fix this plz. Invalid category on adding new transaction");
             }
         }
+        finish();
     }
 
     public class DecimalDigitsInputFilter implements InputFilter {
