@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -56,6 +57,10 @@ public class InfoDetalhada extends AppCompatActivity
         tvSubTitulo = (TextView) findViewById(R.id.tv_orcamento_InfoDetalhada);
         tvRodape = (TextView) findViewById(R.id.tv_DinheiroRestante_infoDetalhada);
 
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
         Bundle extras = getIntent().getExtras();
 
         gestDados = (GestorDados) extras.getSerializable("GESTAO");
@@ -81,48 +86,6 @@ public class InfoDetalhada extends AppCompatActivity
         lv.setAdapter(new lvAdapter());
     }
 
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        Intent intent = new Intent(this, InfoDetalhada.class);
-        intent.putExtra("GESTAO",gestDados);
-        if (id == R.id.nav_rendimentos) {
-            intent.putExtra("TIPO",true);
-
-
-        } else if (id == R.id.nav_alimentacao) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Alimentação");
-
-        } else if (id == R.id.nav_alojamento) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Alojamento");
-
-        } else if (id == R.id.nav_transportes) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Transportes");
-
-        } else if (id == R.id.nav_universidade) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Universidade");
-
-        } else if (id == R.id.nav_lazer) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Lazer");
-
-        } else if (id == R.id.nav_outros) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Outros");
-        }
-
-        startActivity(intent);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -195,6 +158,49 @@ public class InfoDetalhada extends AppCompatActivity
     }
 
 
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        Intent intent = new Intent(this, InfoDetalhada.class);
+        intent.putExtra("GESTAO",gestDados);
+        if (id == R.id.nav_rendimentos) {
+            intent.putExtra("TIPO",true);
+
+
+        } else if (id == R.id.nav_alimentacao) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Alimentação");
+
+        } else if (id == R.id.nav_alojamento) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Alojamento");
+
+        } else if (id == R.id.nav_transportes) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Transportes");
+
+        } else if (id == R.id.nav_universidade) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Universidade");
+
+        } else if (id == R.id.nav_lazer) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Lazer");
+
+        } else if (id == R.id.nav_outros) {
+            intent.putExtra("TIPO",false);
+            intent.putExtra("CATEGORIA","Outros");
+        }
+
+        startActivity(intent);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     class lvAdapter extends BaseAdapter {
         private int posicao;
 
@@ -266,8 +272,6 @@ public class InfoDetalhada extends AppCompatActivity
                     intent.putExtra("GD", gestDados);
                     if (!isRendimento) {
                         try {
-                            //TODO : NUNO E BRUNO VERIFIQUEM ESTES INTENTS
-
                             intent.putExtra("TR", gestDados.getCategoriaDespesas(categoria).getListaDeTransacoes().get(posicao));
                         } catch (InvalidCategoryException e) {
                             e.printStackTrace();
