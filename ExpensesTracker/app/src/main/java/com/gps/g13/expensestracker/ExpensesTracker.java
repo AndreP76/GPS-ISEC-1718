@@ -19,11 +19,13 @@ import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 public class ExpensesTracker extends Application {
     static GestorDados gd;
     static Context c = null;
-    public static GestorDados getGestorDadosGlobal(Context ctx){
-        if(c == null)
+
+    public static GestorDados getGestorDadosGlobal(Context ctx) {
+        if (c == null) {
             c = ctx;
-        if(gd == null){
-            Log.w("[GLOBAL] :: ","Uma atividade pediu o gestor de dados e ele era null. Isto é suposto acontecer só uma vez");
+        }
+        if (gd == null) {
+            Log.w("[GLOBAL] :: ", "Uma atividade pediu o gestor de dados e ele era null. Isto é suposto acontecer só uma vez");
             gd = new GestorDados(c);
         }
         return gd;

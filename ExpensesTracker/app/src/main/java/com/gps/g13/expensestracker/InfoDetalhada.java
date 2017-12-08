@@ -80,7 +80,7 @@ public class InfoDetalhada extends AppCompatActivity
 
             try {
                 tvCategoria.setText(gestDados.getCategoriaDespesas(categoria).getNome());
-                tvSubTitulo.setText(getResources().getString(R.string.orcamento) + ((CategoriaDespesas)gestDados.getCategoriaDespesas(categoria)).getOrcamento() + getResources().getString(R.string.unidade_monetaria));
+                tvSubTitulo.setText(getResources().getString(R.string.orcamento) + ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() + getResources().getString(R.string.unidade_monetaria));
                 //TODO : HERE
                 double restante = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() - gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes();
                 tvRodape.setText(String.format("%s%s", getResources().getString(R.string.orcamento_restante), restante));
@@ -110,11 +110,10 @@ public class InfoDetalhada extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater mi = new MenuInflater(this);
-        mi.inflate(R.menu.informacao_detalhada_menu,menu);
+        mi.inflate(R.menu.informacao_detalhada_menu, menu);
 
         //MenuItem item = (MenuItem) findViewById(R.id.EditaOrcamento);
-        if (isRendimento)
-        {
+        if (isRendimento) {
             invalidateOptionsMenu();
             MenuItem item = menu.findItem(R.id.EditaOrcamento);
             item.setVisible(false);
@@ -160,7 +159,7 @@ public class InfoDetalhada extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int id) {
                             try {
                                 gestDados.editarOrcamento(categoria, Double.parseDouble(input.getText().toString()));
-                                tvSubTitulo.setText(getResources().getString(R.string.orcamento) + ((CategoriaDespesas)gestDados.getCategoriaDespesas(categoria)).getOrcamento() + getResources().getString(R.string.unidade_monetaria));
+                                tvSubTitulo.setText(getResources().getString(R.string.orcamento) + ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() + getResources().getString(R.string.unidade_monetaria));
                             } catch (InvalidCategoryException e) {
                                 e.printStackTrace();
                             } catch (InvalidAmmountException | NumberFormatException e) {
@@ -178,40 +177,39 @@ public class InfoDetalhada extends AppCompatActivity
     }
 
 
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Intent intent = new Intent(this, InfoDetalhada.class);
-        intent.putExtra("GESTAO",gestDados);
+        intent.putExtra("GESTAO", gestDados);
         if (id == R.id.nav_rendimentos) {
-            intent.putExtra("TIPO",true);
+            intent.putExtra("TIPO", true);
 
 
         } else if (id == R.id.nav_alimentacao) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Alimentação");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Alimentação");
 
         } else if (id == R.id.nav_alojamento) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Alojamento");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Alojamento");
 
         } else if (id == R.id.nav_transportes) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Transportes");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Transportes");
 
         } else if (id == R.id.nav_universidade) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Universidade");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Universidade");
 
         } else if (id == R.id.nav_lazer) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Lazer");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Lazer");
 
         } else if (id == R.id.nav_outros) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Outros");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Outros");
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -283,10 +281,10 @@ public class InfoDetalhada extends AppCompatActivity
                 }
             } else {
                 try {
-                tv_nomeTransacao.setText(gestDados.getCategoriaRendimento().getTransacao(i).getNome());
-                tvValorTransacao.setText("" + gestDados.getCategoriaRendimento().getTransacao(i).getMontante());
-                dAux = gestDados.getCategoriaDespesas(categoria).getTransacao(i).getData();
-                tvDataTransacao.setText("" + df.format(dAux));
+                    tv_nomeTransacao.setText(gestDados.getCategoriaRendimento().getTransacao(i).getNome());
+                    tvValorTransacao.setText("" + gestDados.getCategoriaRendimento().getTransacao(i).getMontante());
+                    dAux = gestDados.getCategoriaDespesas(categoria).getTransacao(i).getData();
+                    tvDataTransacao.setText("" + df.format(dAux));
                 } catch (InvalidCategoryException e) {
                     e.printStackTrace();
                 }

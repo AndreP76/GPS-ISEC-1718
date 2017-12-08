@@ -1,10 +1,13 @@
 package com.gps.g13.expensestracker;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gps.g13.expensestracker.gestaodedados.Categoria;
 import com.gps.g13.expensestracker.gestaodedados.Dados;
 import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 import com.gps.g13.expensestracker.gestaodedados.Transacao;
@@ -24,7 +28,10 @@ import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidTransactionEx
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Date;
+import java.util.Date;
+import java.util.SimpleTimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,8 +45,10 @@ public class InserirActivity extends AppCompatActivity {
     private TextView transacaoMes;
     private TextView transacaoAno;
     private Button btnOK;
+
     private TextView tipo;
     private TextView categoria;
+
     private String categoriaName;
     private Transacao transacaoEditar;
     private GestorDados gd;
@@ -74,9 +83,6 @@ public class InserirActivity extends AppCompatActivity {
         categoria=(TextView) findViewById(R.id.tv_inserir_Categoria);
 
         Bundle extras=getIntent().getExtras();
-
-
-
         transacaoEditar = (Transacao) extras.getSerializable("TR");
         gd = ExpensesTracker.getGestorDadosGlobal(this);/*(GestorDados)extras.getSerializable("GD");*/
         if(transacaoEditar != null) {//modo de edicao
@@ -201,6 +207,7 @@ public class InserirActivity extends AppCompatActivity {
             Matcher matcher=mPattern.matcher(dest);
             if(!matcher.matches())
                 return "";
+            }
             return null;
         }
 
