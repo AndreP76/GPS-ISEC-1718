@@ -1,6 +1,7 @@
 package com.gps.g13.expensestracker;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +14,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.gps.g13.expensestracker.gestaodedados.Categoria;
+import com.gps.g13.expensestracker.gestaodedados.Dados;
+import com.gps.g13.expensestracker.gestaodedados.GestorDados;
+import com.gps.g13.expensestracker.gestaodedados.Transacao;
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidAmmountException;
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidCategoryException;
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidDateException;
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidNameException;
+import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidTransactionException;
 
 import org.w3c.dom.Text;
 
@@ -36,6 +47,9 @@ public class InserirActivity extends AppCompatActivity {
     private TextView tipo;
     private TextView categoria;
 
+    private String categoriaName;
+    private Transacao transacaoEditar;
+    private GestorDados gd;
 
     Date date;
     Calendar cal;
@@ -43,13 +57,18 @@ public class InserirActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inserir);
-        //Remove actionBar
-        try{
-            getSupportActionBar().hide();
-
+        //CODIGO GERADO AUTOMATICAMENTE PELO ANDROID STUDIO
+        //INICIO
+        try{  //Remover a actionbar
+            ActionBar supportBar = getSupportActionBar();
+            if(supportBar != null) {
+                supportBar.hide();
+            }
         }catch (Exception e){
             Log.i("inserirNova",e.getMessage());
         }
+
+        //FIM
 
         transacaoNome =(EditText) findViewById(R.id.et_InserirTransacao_nome);
         transacaoValor =(EditText) findViewById(R.id.et_InserirTransacao_valor);
@@ -60,94 +79,89 @@ public class InserirActivity extends AppCompatActivity {
         transacaoMes = (TextView) findViewById(R.id.tv_InserirTransacao_data_mes);
         transacaoAno= (TextView) findViewById(R.id.tv_InserirTransacao_data_ano);;
         btnOK=(Button)findViewById(R.id.btn_InserirTransacao_ok);
-
-
         tipo =(TextView) findViewById(R.id.tv_inserir_tipo);
         categoria=(TextView) findViewById(R.id.tv_inserir_Categoria);
 
         Bundle extras=getIntent().getExtras();
 
-        if(extras.get("TIPO").equals("Rendimento")){
-            tipo.setText(R.string.NovoRendimento);
-            categoria.setVisibility(View.GONE);
-        }else{
-            tipo.setText(R.string.NovaDespesa);
-            categoria.setText((String)extras.get("CATEGORIA"));
-        }
 
 
-        //get data actual e por nas textViews correspondentes
-        date= new Date();
-        cal = Calendar.getInstance();
-        cal.setTime(date);
-        int mes=cal.get(Calendar.MONTH);
-        mes++;//mes vem de 0 a 11, logo o mes++
+        transacaoEditar = (Transacao) extras.getSerializable("TR");
+        gd = (GestorDados)extras.getSerializable("GD");
+        if(transacaoEditar != null) {//modo de edicao
+            transacaoDia.setText(transacaoEditar.getData().getDay());
+            transacaoAno.setText(transacaoEditar.getData().getYear());
+            transacaoMes.setText(transacaoEditar.getData().getMonth());
+            transacaoNome.setText(transacaoEditar.getNome());
+            transacaoValor.setText(transacaoEditar.getMontante() + "");
 
-        transacaoMes.setText(mes+"");
-        transacaoAno.setText(cal.get(Calendar.YEAR)+"");
-
-
-
-
-    }
-
-
-
-
-
-
-
-    public void onClickOK(View v){
-        int dia;
-
-        try {
-            dia= Integer.parseInt(transacaoDia.getText().toString());
-
-
-            //Ve se o dia esta correto
-            if(dia>0&& dia<=cal.get(Calendar.DAY_OF_MONTH)){
-
-
-                //ve se o valor € é correto
-                char[] x=transacaoValor.getText().toString().toCharArray();
-                int count=0;
-                boolean ok =false;
-
-                for(int i =0; i<x.length;i++){
-                    if(ok){
-                        count++;
-                    }
-
-                    if(x[i]=='.'){
-                        ok=true;
-                    }
-                }
-                if(count>2){
-                    Toast.makeText(this, "Valor invalido" , Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-
-
-
-                //sai
-               // finish();
-
-
-
-            }else{
-                Toast.makeText(this, "Data invalida" , Toast.LENGTH_LONG).show();
-
+            categoria.setText(((Categoria)(transacaoEditar.getCategoria())).getNome());
+            tipo.setText(R.string.editTransacao);
+        }else {//modo de adição
+            categoriaName = (String) extras.get("CATEGORIA");
+            if (categoriaName != null && categoriaName.equals(Dados.RENDIMENTOS_KEY)) {
+                tipo.setText(R.string.NovoRendimento);
+                categoria.setVisibility(View.GONE);
+            } else if (categoriaName != null) {
+                tipo.setText(R.string.NovaDespesa);
+                categoria.setText(categoriaName);
+            } else {
+                Log.e("[INSERIR] :: ","Received a null category");
+                Log.i("[INSERIR] :: ","A culpa é do Nuno e do Bruno, passem as cenas em condições");
+                finish();
             }
 
-        }catch (Exception e){
-            Toast.makeText(this, "Dados invalidos" , Toast.LENGTH_LONG).show();
-            Log.i("test",e.getMessage());
-        }
+            //meter a data atual nas textViews correspondentes
+            date= new Date();
+            cal = Calendar.getInstance();
+            cal.setTime(date);
+            int mes=cal.get(Calendar.MONTH);
+            mes++;//mes vem de 0 a 11, logo o mes++
 
+            transacaoMes.setText(mes+"");
+            transacaoAno.setText(cal.get(Calendar.YEAR)+"");
+        }
     }
 
-
+    public void onClickOK(View v){
+        Date data;
+        try {
+            data = new Date(Integer.parseInt(transacaoAno.getText().toString()), Integer.parseInt(transacaoMes.getText().toString()), Integer.parseInt(transacaoDia.getText().toString()));
+        }catch (RuntimeException rEx){
+            Log.w("[INSERIR] :: ","Transaction date parsing failed. Assuming today.");
+            data = new Date();
+        }
+        String categoria = categoriaName;
+        String Nome = transacaoNome.getText().toString();
+        double Montante = Double.parseDouble(transacaoValor.getText().toString());
+        if(transacaoEditar != null){//modo edição
+            try {
+                gd.editarTransacao(categoria,transacaoEditar.getNome(),Nome,Montante,data);
+            } catch (InvalidCategoryException e) {
+                Log.e("[INSERIR] :: ","Edited transaction category is invalid!");
+                Toast.makeText(this,"Ocorreu um erro ao editar a transação selecionada. Por favor tente novamente",Toast.LENGTH_SHORT).show();
+                finish();
+            } catch (InvalidTransactionException e) {
+                Log.e("[INSERIR] :: ","Edited transaction is invalid!");
+                Toast.makeText(this,"Ocorreu um erro ao editar a transação selecionada. Por favor tente novamente",Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }else{
+            try {
+                gd.adicionaTransacao(categoria,Nome,Montante,data);
+            } catch (InvalidNameException e) {
+                Toast.makeText(this,"Este nome não é aceitavel para a transação. Mude o nome e tente novamente",Toast.LENGTH_SHORT).show();
+            } catch (InvalidAmmountException e) {
+                Toast.makeText(this,"Este montante não é valido. Mude o valor e tente novamente",Toast.LENGTH_SHORT).show();
+            } catch (InvalidDateException e) {
+                Toast.makeText(this,"Esta data não é aceitavel para a transação. Mude a data e tente novamente",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            } catch (InvalidCategoryException e) {
+                Toast.makeText(this,"Erro desconhecido na adição de uma transação. Tente novamente.",Toast.LENGTH_SHORT).show();
+                Log.e("[INSERIR] :: ","Programmers fix this plz. Invalid category on adding new transaction");
+            }
+        }
+    }
 
     public class DecimalDigitsInputFilter implements InputFilter {
 
