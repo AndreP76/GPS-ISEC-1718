@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -18,20 +19,18 @@ import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 import java.util.List;
 import java.util.Locale;
 
-public class InformacaoGeral extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
+public class InformacaoGeral extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private TextView tvOrcamentoTotal;
     private TextView tvDinheiroGasto;
     private TextView tvBalanco;
-    private GestorDados gestorDados;
+    private static GestorDados gestorDados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacao_geral);
 
-        gestorDados = new GestorDados();
+        gestorDados = ExpensesTracker.getGestorDadosGlobal();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

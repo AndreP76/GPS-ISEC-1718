@@ -1,5 +1,9 @@
 package com.gps.g13.expensestracker.gestaodedados;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidAmmountException;
@@ -19,11 +23,12 @@ import java.util.Date;
 import java.util.List;
 
 public class GestorDados implements Serializable {
-    private static final String BACKUP_PATH = "";
-    private static final String STANDARD_PATH = "";
+    private String BACKUP_PATH = "";
+    private String STANDARD_PATH = "";
     private Dados data;
 
     public GestorDados(String dataFilePath) {
+
         this.data = readDataFromFile(dataFilePath, true);
         if (this.data == null)
             this.data = new Dados();
@@ -33,8 +38,9 @@ public class GestorDados implements Serializable {
         this.data = data;
     }
 
-    public GestorDados() {
-        this(STANDARD_PATH);
+    public GestorDados(Context c) {
+        BACKUP_PATH = c.getFilesDir().toString() + "/settings.xml";
+        STANDARD_PATH = c.getFilesDir().toString() + "/data.bin";
     }
 
     private Dados readDataFromBackupFile(String originFile) {
@@ -51,12 +57,10 @@ public class GestorDados implements Serializable {
                 return new Dados();
             }
         } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
+            return new Dados();
         } catch (IOException e1) {
-            e1.printStackTrace();
+            return new Dados();
         }
-        Log.w("[GESTOR] :: ", "readDataFromBackup retornou null");
-        return null;
     }
 
     private Dados readDataFromFile(String dataFile, boolean useBackup) {
@@ -78,9 +82,8 @@ public class GestorDados implements Serializable {
             return readDataFromBackupFile(dataFile);
         } catch (IOException e) {
             e.printStackTrace();
+            return readDataFromBackupFile(dataFile);
         }
-        Log.w("[GESTOR] :: ", "readDataFromFile retornou null");
-        return null;
     }
 
     private void overrideFileWithBackup(String dataFile) {

@@ -68,7 +68,7 @@ public class InfoDetalhada extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
 
-        gestDados = (GestorDados) extras.getSerializable("GESTAO");
+        gestDados = ExpensesTracker.getGestorDadosGlobal();//(GestorDados) extras.getSerializable("GESTAO");
         isRendimento = extras.getBoolean("TIPO");
         if (!isRendimento) {
             categoria = extras.getString("CATEGORIA");
@@ -284,7 +284,7 @@ public class InfoDetalhada extends AppCompatActivity
                 public void onClick(View view) {
                     Intent intent = new Intent(context, InserirActivity.class);
 
-                    intent.putExtra("GD", gestDados);
+                    //intent.putExtra("GD", gestDados);
                     if (!isRendimento) {
                         try {
                             intent.putExtra("TR", gestDados.getCategoriaDespesas(categoria).getTransacao(posicao));

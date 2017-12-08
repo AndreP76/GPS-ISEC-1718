@@ -89,9 +89,8 @@ public class InserirActivity extends AppCompatActivity {
 
 
         transacaoEditar = (Transacao) extras.getSerializable("TR");
-        gd = (GestorDados)extras.getSerializable("GD");
+        gd = ExpensesTracker.getGestorDadosGlobal();/*(GestorDados)extras.getSerializable("GD");*/
         if(transacaoEditar != null) {//modo de edicao
-
             Calendar time = Calendar.getInstance(); //variavel aux so' para converter
             time.setTimeInMillis(transacaoEditar.getData().getTime());
 
@@ -101,7 +100,8 @@ public class InserirActivity extends AppCompatActivity {
             transacaoNome.setText(transacaoEditar.getNome());
             transacaoValor.setText(transacaoEditar.getMontante() + "");
 
-            categoria.setText(((Categoria)(transacaoEditar.getCategoria())).getNome());
+            categoria.setText(transacaoEditar.getCategoria().getNome());
+            categoriaName = transacaoEditar.getCategoria().getNome();
             tipo.setText(R.string.editTransacao);
         }else {//modo de adição
             categoriaName = (String) extras.get("CATEGORIA");
