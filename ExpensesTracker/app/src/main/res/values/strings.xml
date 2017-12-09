@@ -18,7 +18,7 @@
     <string name="NovoRendimento">Novo Rendimento</string>
     <string name="NovaDespesa">Nova Despesa</string>
     <string name="editTransacao">Editar transação</string>
-    <string name="orcamento">Orcamento:</string>
+    <string name="orcamento">Orçamento:</string>
     <string name="orcamento_restante">Orçamento Restante:</string>
     <string name="dinheiro_total">Dinheiro Total:</string>
     <string name="orcamento_disponivel">Orçamento disponível:</string>
