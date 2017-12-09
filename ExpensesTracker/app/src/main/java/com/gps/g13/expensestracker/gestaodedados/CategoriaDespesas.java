@@ -22,7 +22,7 @@ public class CategoriaDespesas extends Categoria {
         }
     }
 
-    //este metodo percorre todas as transacoes realizadas e adiciona o seu montante. Neste caso como as transacoes sao Despesas retornamos como um valor negativo
+    //este metodo percorre todas as transacoes realizadas e adiciona o seu montante
     @Override
     public double getResumoDeTransacoes() {
         double soma = 0.0;

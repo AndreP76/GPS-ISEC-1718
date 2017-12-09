@@ -9,7 +9,7 @@ import java.util.List;
 public class CategoriaRendimento extends Categoria {
     public static final String NOME_RENDIMENTO = "Rendimentos";
 
-    public CategoriaRendimento(){
+    public CategoriaRendimento() {
         super(NOME_RENDIMENTO);
     }
 

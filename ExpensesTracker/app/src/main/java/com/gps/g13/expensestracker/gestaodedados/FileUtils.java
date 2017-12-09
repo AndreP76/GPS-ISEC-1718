@@ -14,9 +14,7 @@ import java.io.OutputStreamWriter;
 
 //Visto que havia funcionalidades na gestao de ficheiros que so estavam disponiveis no API 26 tivemos que criar codigo
 public final class FileUtils {
-
-
-    //copia um ficheiro de uma origem (origin) para um destino (destination) - caso ja exista um ficheiro no destino com o mesmo nome e' apagado e escrito o novo
+    //copia um ficheiro de uma origem (origin) para um destino (destination) - caso ja exista um ficheiro no destino com o mesmo nome é apagado e escrito o novo
     public static void copyFiles(String origin, String destination) {
         if (fileExists(origin)) {
             try {

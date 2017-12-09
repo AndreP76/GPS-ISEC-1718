@@ -59,9 +59,9 @@ public class InformacaoGeral extends AppCompatActivity implements NavigationView
 
         balanco = orcamento - dinheiroGasto;
 
-        String str = String.format(Locale.getDefault(),"%s%.2f%s", getResources().getString(R.string.orcamentototal), orcamento, getResources().getString(R.string.unidade_monetaria));
+        String str = String.format(Locale.getDefault(), "%s %.2f %s", getResources().getString(R.string.orcamentototal), orcamento, getResources().getString(R.string.unidade_monetaria));
         tvOrcamentoTotal.setText(str);
-        str = String.format(Locale.getDefault(),"%s%.2f%s", getResources().getString(R.string.dinheiroGasto), dinheiroGasto, getResources().getString(R.string.unidade_monetaria));
+        str = String.format(Locale.getDefault(), "%s %.2f %s", getResources().getString(R.string.dinheiroGasto), dinheiroGasto, getResources().getString(R.string.unidade_monetaria));
         tvDinheiroGasto.setText(str);
         str = String.format(Locale.getDefault(), "%s%.2f%s", getResources().getString(R.string.balanco), balanco, getResources().getString(R.string.unidade_monetaria));
         tvBalanco.setText(str);
@@ -104,34 +104,34 @@ public class InformacaoGeral extends AppCompatActivity implements NavigationView
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Intent intent = new Intent(this, InfoDetalhada.class);
-        intent.putExtra("GESTAO",gestorDados);
+        intent.putExtra("GESTAO", gestorDados);
         if (id == R.id.nav_rendimentos) {
-            intent.putExtra("TIPO",true);
+            intent.putExtra("TIPO", true);
 
 
         } else if (id == R.id.nav_alimentacao) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Alimentação");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Alimentação");
 
         } else if (id == R.id.nav_alojamento) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Alojamento");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Alojamento");
 
         } else if (id == R.id.nav_transportes) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Transportes");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Transportes");
 
         } else if (id == R.id.nav_universidade) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Universidade");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Universidade");
 
         } else if (id == R.id.nav_lazer) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Lazer");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Lazer");
 
         } else if (id == R.id.nav_outros) {
-            intent.putExtra("TIPO",false);
-            intent.putExtra("CATEGORIA","Outros");
+            intent.putExtra("TIPO", false);
+            intent.putExtra("CATEGORIA", "Outros");
         }
 
         startActivity(intent);

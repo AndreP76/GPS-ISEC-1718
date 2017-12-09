@@ -8,7 +8,7 @@ public abstract class Categoria implements Serializable {
     private String nome;
     private List<Transacao> transacoes;
 
-    public Categoria(String nome){
+    public Categoria(String nome) {
         this.nome = nome;
         transacoes = new ArrayList<>();
     }
@@ -17,7 +17,7 @@ public abstract class Categoria implements Serializable {
         return nome;
     }
 
-    //quando se adiciona uma transacao so' e' possivel adicionar transacoes nao nulas e montante positivo
+    //quando se adiciona uma transacao só é possivel adicionar transacoes nao nulas e montante positivo
     public void adicionarTransacao(Transacao transacao) {
         if (transacao != null && transacao.getMontante() > 0) {
             transacoes.add(transacao);
@@ -30,13 +30,13 @@ public abstract class Categoria implements Serializable {
         }
     }
 
-    public abstract double getResumoDeTransacoes();
+    public abstract double getResumoDeTransacoes();// as classes derivadas implementam isto de forma apropriada
 
     public List<Transacao> getListaDeTransacoes() {
         return transacoes;
     }
 
-    //se o index que e' recebido por parametro e' menor que 0 ou maior que o tamanho da List e' retornado null
+    //se o index que é recebido por parametro é menor que 0 ou maior que o tamanho da List é retornado null
     public Transacao getTransacao(int index) {
         if (index < 0 || index >= transacoes.size()) {
             return null;

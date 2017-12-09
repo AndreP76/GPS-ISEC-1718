@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -22,9 +21,8 @@ public class GestorDadosTest {
     GestorDados gestor;
 
     @Before
-    public void instanciaObjetos(){
+    public void instanciaObjetos() {
         gestor = new GestorDados(new Dados());
-
 
 
         //gestor.guardaDados();

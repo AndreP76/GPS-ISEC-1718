@@ -13,6 +13,7 @@ import java.util.Map;
 public class Dados implements Serializable {
     public static final String RENDIMENTOS_KEY = "Rendimentos";
     private Map<String, Categoria> categorias;
+    // as validações do gestor de dados sao criticas ao bom funcionamento desta classe
 
     public Dados() {
         categorias = new HashMap<>();
@@ -51,7 +52,7 @@ public class Dados implements Serializable {
         return resposta;
     }
 
-    public boolean removeTransacao(String categoria, String nome) {   // TODO -> pode correr extremamanete mal, fica a dica
+    public boolean removeTransacao(String categoria, String nome) {
         boolean resposta = false;
         Categoria c = categorias.get(categoria);
         if (c != null) {
@@ -85,7 +86,8 @@ public class Dados implements Serializable {
         return resposta;
     }
 
-
+    //retorna uma categoria se ela existir
+    //pode retornar null ou atirar exceçoes
     public Categoria getCategoria(String categoria) throws InvalidCategoryException {
         if (containsCategory(categoria)) {
             return categorias.get(categoria);

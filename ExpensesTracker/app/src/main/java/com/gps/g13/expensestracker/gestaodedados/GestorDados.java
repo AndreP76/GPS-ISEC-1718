@@ -24,18 +24,9 @@ public class GestorDados implements Serializable {
     private String STANDARD_PATH = "";
     private Dados data;
 
-    public GestorDados(String dataFilePath) {
-
-        this.data = readDataFromFile(dataFilePath, true);
-        if (this.data == null) {
-            this.data = new Dados();
-        }
-    }
-
     public GestorDados(Dados data) {
         this.data = data;
-    }
-
+    } // para testes
     public GestorDados(Context c) {
         BACKUP_PATH = c.getFilesDir().toString() + "/settings.xml";
         STANDARD_PATH = c.getFilesDir().toString() + "/data.bin";
@@ -46,6 +37,9 @@ public class GestorDados implements Serializable {
         }
     }
 
+    /**
+     * Metodos privados inicio
+     **/
     private Dados readDataFromBackupFile(String originFile) {
         try (FileInputStream bIn = new FileInputStream(BACKUP_PATH)) {
             try (ObjectInputStream OIS = new ObjectInputStream(bIn)) {
@@ -65,7 +59,6 @@ public class GestorDados implements Serializable {
             return new Dados();
         }
     }
-
     private Dados readDataFromFile(String dataFile, boolean useBackup) {
         try (FileInputStream fIn = new FileInputStream(dataFile)) {
             try (ObjectInputStream OIS = new ObjectInputStream(fIn)) {
@@ -88,11 +81,9 @@ public class GestorDados implements Serializable {
             return readDataFromBackupFile(dataFile);
         }
     }
-
     private void overrideFileWithBackup(String dataFile) {
         FileUtils.copyFiles(BACKUP_PATH, dataFile);
     }
-
     private void writeDataToFile(String dataFile) {
         try {
             try (FileOutputStream writeOut = new FileOutputStream(dataFile)) {
@@ -110,6 +101,11 @@ public class GestorDados implements Serializable {
         }
     }
 
+    /**
+     * Metodos privados fim
+     **/
+
+
     public CategoriaRendimento getCategoriaRendimento() {
         try {
             return (CategoriaRendimento) data.getCategoria(Dados.RENDIMENTOS_KEY);
@@ -118,7 +114,6 @@ public class GestorDados implements Serializable {
             return null;
         }
     }
-
     public Categoria getCategoriaDespesas(String name) throws InvalidCategoryException {
         if (ValidationModule.isValidExpensesCategory(name, data)) {
             return data.getCategoria(name);
@@ -126,19 +121,17 @@ public class GestorDados implements Serializable {
             throw new InvalidCategoryException("Category " + name + " is not a valid expenses category");
         }
     }
-
     public List<Categoria> getCategorias() {
         return data.getCategorias();
     }
-
     public List<Transacao> getTransacoesCategoria(String name) {
         return data.getTransacoesCategoria(name);
     }
 
+    //metodo publico para forçar uma atualização de dados
     public Dados carregaDados() {
         return readDataFromFile(STANDARD_PATH, true);
     }
-
     //Guarda toda a informacao da classe em um ficheiro
     public void guardaDados() {
         writeDataToFile(STANDARD_PATH);
@@ -150,10 +143,7 @@ public class GestorDados implements Serializable {
             if (d == null) {
                 Log.e("[GESTOR] :: ", "Reading from just written data returned null. Overriding with backup file");
                 overrideFileWithBackup(STANDARD_PATH);
-            } /*else if (!d.equals(data)) {
-                Log.w("[GESTOR] :: ", "Reading from just written data returned a different value from expected. Overriding with backup file");
-                overrideFileWithBackup(STANDARD_PATH);
-            }*/
+            }
         }
     }
 
@@ -176,7 +166,6 @@ public class GestorDados implements Serializable {
             throw new InvalidCategoryException("Category " + categoria + "is invalid!");
         }
     }
-
     public boolean removeTransacao(String categoria, String nome) throws InvalidCategoryException, InvalidTransactionException {
         if (ValidationModule.isValidCategory(categoria, data)) {
             if (ValidationModule.isValidTransaction(categoria, nome, data)) {
@@ -189,7 +178,6 @@ public class GestorDados implements Serializable {
         }
         return false;
     }
-
     public boolean editarTransacao(String categoria, String nomeAtual, String novoNome, double montante, Date data) throws InvalidCategoryException, InvalidTransactionException {
         if (ValidationModule.isValidTransaction(categoria, nomeAtual, this.data)) {
             return this.data.editaTransacao(categoria, nomeAtual, novoNome, montante, data);
@@ -197,7 +185,6 @@ public class GestorDados implements Serializable {
             throw new InvalidTransactionException("Transaction " + nomeAtual + " is invalid");
         }
     }
-
     public boolean editarOrcamento(String categoria, double orçamento) throws InvalidCategoryException, InvalidAmmountException {
         if (ValidationModule.isValidAmmount(orçamento)) {
             if (ValidationModule.isValidExpensesCategory(categoria, data)) {

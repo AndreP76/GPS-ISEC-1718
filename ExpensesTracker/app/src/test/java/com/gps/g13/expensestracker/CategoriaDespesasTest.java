@@ -21,11 +21,11 @@ public class CategoriaDespesasTest {
         CategoriaDespesas d = new CategoriaDespesas("teste");
 
         //quando se cria uma despesa o seu orcamento e' 0
-        assertEquals(0, d.getOrcamento(),0);
+        assertEquals(0, d.getOrcamento(), 0);
 
         //quando se introduz x orgamento positivo
         d.setOrcamento(50.3);
-        assertEquals(50.3, d.getOrcamento(),0);
+        assertEquals(50.3, d.getOrcamento(), 0);
 
         //quando se introduz x orgamento negativo
         d.setOrcamento(-49.0);
