@@ -59,11 +59,11 @@ public class InformacaoGeral extends AppCompatActivity implements NavigationView
 
         balanco = orcamento - dinheiroGasto;
 
-        String str = String.format(Locale.getDefault(),"%s %.2f %s", getResources().getString(R.string.orcamentototal), orcamento, getResources().getString(R.string.unidade_monetaria));
+        String str = String.format(Locale.getDefault(),"%s%.2f%s", getResources().getString(R.string.orcamentototal), orcamento, getResources().getString(R.string.unidade_monetaria));
         tvOrcamentoTotal.setText(str);
-        str = String.format(Locale.getDefault(),"%s %.2f %s", getResources().getString(R.string.dinheiroGasto), dinheiroGasto, getResources().getString(R.string.unidade_monetaria));
+        str = String.format(Locale.getDefault(),"%s%.2f%s", getResources().getString(R.string.dinheiroGasto), dinheiroGasto, getResources().getString(R.string.unidade_monetaria));
         tvDinheiroGasto.setText(str);
-        str = String.format(Locale.getDefault(), "%s %.2f %s", getResources().getString(R.string.balanco), balanco, getResources().getString(R.string.unidade_monetaria));
+        str = String.format(Locale.getDefault(), "%s%.2f%s", getResources().getString(R.string.balanco), balanco, getResources().getString(R.string.unidade_monetaria));
         tvBalanco.setText(str);
     }
 
