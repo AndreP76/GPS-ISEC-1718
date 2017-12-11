@@ -85,10 +85,9 @@ public class InfoDetalhada extends AppCompatActivity
                         getResources().getString(R.string.orcamento),
                         ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento(),
                         getResources().getString(R.string.unidade_monetaria)));
-                double restante = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() - gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes();
                 tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                         getResources().getString(R.string.orcamento_restante),
-                        restante,
+                        ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamentoRestante(),
                         getResources().getString(R.string.unidade_monetaria)));
 
             } catch (InvalidCategoryException e) {
@@ -114,12 +113,10 @@ public class InfoDetalhada extends AppCompatActivity
         super.onResume();
         lva.notifyDataSetChanged();
         if (!isRendimento) {
-            double restante = 0;
             try {
-                restante = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() - gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes();
                 tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                         getResources().getString(R.string.orcamento_restante),
-                        restante,
+                        ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamentoRestante(),
                         getResources().getString(R.string.unidade_monetaria)));
             } catch (InvalidCategoryException e) {
                 e.printStackTrace();
@@ -190,11 +187,9 @@ public class InfoDetalhada extends AppCompatActivity
                                         getResources().getString(R.string.orcamento),
                                         ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento(),
                                         getResources().getString(R.string.unidade_monetaria)));
-                                double restante = 0;
-                                restante = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() - gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes();
                                 tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                                         getResources().getString(R.string.orcamento_restante),
-                                        restante,
+                                        ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamentoRestante(),
                                         getResources().getString(R.string.unidade_monetaria)));
 
                             } catch (InvalidCategoryException e) {
@@ -368,12 +363,10 @@ public class InfoDetalhada extends AppCompatActivity
                                     try {
                                         if (!isRendimento) {
                                             gestDados.removeTransacao(gestDados.getCategoriaDespesas(categoria).getNome(), gestDados.getCategoriaDespesas(categoria).getTransacao(posicao).getNome());
-                                            double restante = 0;
                                             try {
-                                                restante = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() - gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes();
                                                 tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                                                         getResources().getString(R.string.orcamento_restante),
-                                                        restante,
+                                                        ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamentoRestante(),
                                                         getResources().getString(R.string.unidade_monetaria)));
                                             } catch (InvalidCategoryException e) {
                                                 e.printStackTrace();

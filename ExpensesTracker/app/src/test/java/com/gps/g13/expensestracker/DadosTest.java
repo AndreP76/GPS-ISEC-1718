@@ -16,10 +16,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Chamuscado on 07/12/2017.
- */
-
 public class DadosTest {
 
     @Rule
