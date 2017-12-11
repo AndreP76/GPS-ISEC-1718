@@ -158,7 +158,7 @@ public class InfoDetalhada extends AppCompatActivity
             } catch (InvalidCategoryException e) {
                 e.printStackTrace();
             }
-            input.setText(String.format(Locale.getDefault(), "%.2f%s", orcamento, getResources().getString(R.string.unidade_monetaria)));    // mostrar o valor do orcamento atual
+            input.setText(Double.toString(orcamento));    // mostrar o valor do orcamento atual
 
             alertDialogBuilder.setView(input); // uncomment this line
 
@@ -169,7 +169,7 @@ public class InfoDetalhada extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int id) {
                             try {
                                 gestDados.editarOrcamento(categoria, Double.parseDouble(input.getText().toString()));
-                                tvSubTitulo.setText(String.format(Locale.getDefault(), "%s %0.2f%s",
+                                tvSubTitulo.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                                         getResources().getString(R.string.orcamento),
                                         ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento(),
                                         getResources().getString(R.string.unidade_monetaria)));
