@@ -46,8 +46,8 @@ public abstract class Categoria implements Serializable {
     }
 
     public boolean containsTransacao(String nome) {
-        for (Transacao t : transacoes) {
-            if (t.getNome().equals(nome)) {
+        for (Transacao transacao : transacoes) {
+            if (transacao.getNome().equals(nome)) {
                 return true;
             }
         }

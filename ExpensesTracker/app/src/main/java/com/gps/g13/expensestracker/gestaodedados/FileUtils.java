@@ -61,8 +61,8 @@ public final class FileUtils {
     //Metodo que remove um ficheiro no caminho recebido por parametro
     private static boolean removeFile(String origin) throws FileNotFoundException {
         if (fileExists(origin)) {
-            File f = new File(origin);
-            return f.delete();
+            File file = new File(origin);
+            return file.delete();
         } else {
             throw new FileNotFoundException();
         }
@@ -70,7 +70,7 @@ public final class FileUtils {
 
     //Metodo que verifica a existencia de um ficheiro no caminho recebido por parametro
     private static boolean fileExists(String origin) {
-        File f = new File(origin);
-        return f.exists();
+        File file = new File(origin);
+        return file.exists();
     }
 }

@@ -38,13 +38,13 @@ class ValidationModule {
 
     public static boolean isValidExpensesCategory(String categoria, Dados data) {
         if (isValidCategory(categoria, data)) {
-            Categoria c = null;
+            Categoria ccategoria2= null;
             try {
-                c = data.getCategoria(categoria);
+                ccategoria2 = data.getCategoria(categoria);
             } catch (InvalidCategoryException e) {
                 return false;
             }
-            return c instanceof CategoriaDespesas;
+            return ccategoria2 instanceof CategoriaDespesas;
         }
         return false;
     }
