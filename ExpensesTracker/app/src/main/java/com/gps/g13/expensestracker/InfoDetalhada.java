@@ -85,7 +85,6 @@ public class InfoDetalhada extends AppCompatActivity
                         getResources().getString(R.string.orcamento),
                         ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento(),
                         getResources().getString(R.string.unidade_monetaria)));
-                //TODO : HERE
                 double restante = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() - gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes();
                 tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                         getResources().getString(R.string.orcamento_restante),
@@ -98,7 +97,6 @@ public class InfoDetalhada extends AppCompatActivity
         } else {
             categoria = Dados.RENDIMENTOS_KEY;
             tvCategoria.setText(gestDados.getCategoriaRendimento().getNome());
-            tvRodape.setText(getResources().getString(R.string.dinheiro_total) + gestDados.getCategoriaRendimento().getResumoDeTransacoes() + getResources().getString(R.string.unidade_monetaria));
             tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                     getResources().getString(R.string.orcamento_disponivel),
                     gestDados.getCategoriaRendimento().getResumoDeTransacoes(),
@@ -115,6 +113,25 @@ public class InfoDetalhada extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         lva.notifyDataSetChanged();
+        if (!isRendimento) {
+            double restante = 0;
+            try {
+                restante = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() - gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes();
+                tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                        getResources().getString(R.string.orcamento_restante),
+                        restante,
+                        getResources().getString(R.string.unidade_monetaria)));
+            } catch (InvalidCategoryException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                    getResources().getString(R.string.orcamento_disponivel),
+                    gestDados.getCategoriaRendimento().getResumoDeTransacoes(),
+                    getResources().getString(R.string.unidade_monetaria)));
+        }
     }
 
     @Override
@@ -173,10 +190,17 @@ public class InfoDetalhada extends AppCompatActivity
                                         getResources().getString(R.string.orcamento),
                                         ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento(),
                                         getResources().getString(R.string.unidade_monetaria)));
+                                double restante = 0;
+                                restante = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() - gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes();
+                                tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                                        getResources().getString(R.string.orcamento_restante),
+                                        restante,
+                                        getResources().getString(R.string.unidade_monetaria)));
+
                             } catch (InvalidCategoryException e) {
                                 e.printStackTrace();
                             } catch (InvalidAmmountException | NumberFormatException e) {
-                                Toast.makeText(context, "Isso não é um numero valído", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Isso não é um número válído", Toast.LENGTH_SHORT).show();
                             }
                         }
                     })
@@ -333,9 +357,7 @@ public class InfoDetalhada extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
 
-
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
                     // set title
                     alertDialogBuilder.setTitle("Tem a certeza que pretende apagar?");
                     // set dialog message
@@ -346,10 +368,16 @@ public class InfoDetalhada extends AppCompatActivity
                                     try {
                                         if (!isRendimento) {
                                             gestDados.removeTransacao(gestDados.getCategoriaDespesas(categoria).getNome(), gestDados.getCategoriaDespesas(categoria).getTransacao(posicao).getNome());
-                                            tvRodape.setText(String.format(Locale.getDefault(), "%s%.2f%s",
-                                                    getResources().getString(R.string.orcamento_restante),
-                                                    gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes(),
-                                                    getResources().getString(R.string.unidade_monetaria)));
+                                            double restante = 0;
+                                            try {
+                                                restante = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() - gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes();
+                                                tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                                                        getResources().getString(R.string.orcamento_restante),
+                                                        restante,
+                                                        getResources().getString(R.string.unidade_monetaria)));
+                                            } catch (InvalidCategoryException e) {
+                                                e.printStackTrace();
+                                            }
                                         } else {
                                             gestDados.removeTransacao(gestDados.getCategoriaRendimento().getNome(), gestDados.getCategoriaRendimento().getTransacao(posicao).getNome());
                                             tvRodape.setText(String.format(Locale.getDefault(), "%s%.2f%s",

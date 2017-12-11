@@ -146,7 +146,15 @@ public class InserirActivity extends AppCompatActivity {
 
         String categoria = categoriaName;
         String Nome = transacaoNome.getText().toString();
-        double Montante = Double.parseDouble(transacaoValor.getText().toString());
+        double Montante;
+        if(transacaoValor.getText().toString().equals(""))
+        {
+            Montante = 0.0;
+        }
+        else
+        {
+            Montante = Double.parseDouble(transacaoValor.getText().toString());
+        }
         if (transacaoEditar != null) {//modo edição
             try {
                 gd.editarTransacao(categoria, transacaoEditar.getNome(), Nome, Montante, data);
