@@ -89,20 +89,4 @@ public class GestorDadosTest {
         gestor.adicionaTransacao("asdsa", "testeNome", -20.0, new Date(200));
 
     }
-
-    @Test
-    public void ficheiros() throws InvalidDateException, InvalidNameException, InvalidAmmountException, InvalidCategoryException {
-
-        //adiciona uma transacao 'a categoria "Rendimentos"
-        gestor.adicionaTransacao("Rendimentos", "testNome", 20.0, new Date());
-
-        //gestor.guardaDados();
-
-        //GestorDados gdAux = new GestorDados(new Dados());
-
-        //gdAux.carregaDados();
-
-        //verifica se o ficheiro lido tem a transacao adicionada nos rendimentos
-        //assertTrue(gestor.getCategoriaRendimento().containsTransacao("testNome"));
-    }
 }
