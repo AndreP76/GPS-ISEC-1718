@@ -163,10 +163,21 @@ public class InserirActivity extends AppCompatActivity {
                 Log.e("[INSERIR] :: ", "Edited transaction is invalid!");
                 Toast.makeText(this, "Ocorreu um erro ao editar a transação selecionada. Por favor tente novamente", Toast.LENGTH_SHORT).show();
                 finish();
-
             }catch (InvalidCategoryException e) {
                 Log.e("[INSERIR] :: ", "Edited transaction category is invalid!");
                 Toast.makeText(this, "Ocorreu um erro ao editar a transação selecionada. Por favor tente novamente", Toast.LENGTH_SHORT).show();
+                finish();
+            } catch (InvalidDateException e) {
+                Log.e("[INSERIR] :: ", "Edited transaction category is invalid!");
+                Toast.makeText(this, "Esta data não é aceitavel para a transação. Mude a data e tente novamente", Toast.LENGTH_SHORT).show();
+                finish();
+            } catch (InvalidNameException e) {
+                Log.e("[INSERIR] :: ", "Edited transaction category is invalid!");
+                Toast.makeText(this, "Este nome não é aceitavel para a transação. Mude a data e tente novamente", Toast.LENGTH_SHORT).show();
+                finish();
+            } catch (InvalidAmmountException e) {
+                Log.e("[INSERIR] :: ", "Edited transaction category is invalid!");
+                Toast.makeText(this, "Este montante não é aceitavel para a transação. Mude a data e tente novamente", Toast.LENGTH_SHORT).show();
                 finish();
             }
         } else {

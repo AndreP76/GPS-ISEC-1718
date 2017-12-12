@@ -179,10 +179,24 @@ public class GestorDados implements Serializable {
         }
         return false;
     }
-    public boolean editarTransacao(String categoria, String nomeAtual, String novoNome, double montante, Date data) throws InvalidCategoryException, InvalidTransactionException {
+    public boolean editarTransacao(String categoria, String nomeAtual, String novoNome, double montante, Date data) throws InvalidCategoryException, InvalidTransactionException, InvalidDateException, InvalidAmmountException, InvalidNameException {
         if (ValidationModule.isValidTransaction(categoria, nomeAtual, this.data)) {
-            return this.data.editaTransacao(categoria, nomeAtual, novoNome, montante, data);
-        } else {
+            if (ValidationModule.isValidName(novoNome)){
+                if (ValidationModule.isValidAmmount(montante)) {
+                    if (ValidationModule.isValidDate(data)) {
+                        return this.data.editaTransacao(categoria, nomeAtual, novoNome, montante, data);
+                    } else {
+                        throw new InvalidDateException("Data " + data + "is invalid!");
+                    }
+                }else {
+                    throw new InvalidAmmountException("Ammount " + montante + "is invalid!");
+                }
+            }
+            else{
+                throw new InvalidNameException("Name " + novoNome + "is invalid!");
+            }
+        }
+        else{
             throw new InvalidTransactionException("Transaction " + nomeAtual + " is invalid");
         }
     }
