@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +23,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gps.g13.expensestracker.gestaodedados.Categoria;
 import com.gps.g13.expensestracker.gestaodedados.CategoriaDespesas;
+import com.gps.g13.expensestracker.gestaodedados.CategoriaRendimento;
 import com.gps.g13.expensestracker.gestaodedados.Dados;
 import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidAmmountException;
@@ -32,6 +35,7 @@ import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidTransactionEx
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class InfoDetalhada extends AppCompatActivity
@@ -96,9 +100,21 @@ public class InfoDetalhada extends AppCompatActivity
         } else {
             categoria = Dados.RENDIMENTOS_KEY;
             tvCategoria.setText(gestDados.getCategoriaRendimento().getNome());
+            tvSubTitulo.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                    getResources().getString(R.string.dinheiro_total),
+                    gestDados.getCategoriaRendimento().getResumoDeTransacoes(),
+                    getResources().getString(R.string.unidade_monetaria)));
+
+            double totalOrcamentos = 0.0;
+            List<Categoria> categorias = gestDados.getCategorias();
+            for (Categoria c : categorias) {
+                if(!c.getNome().equalsIgnoreCase(CategoriaRendimento.NOME_RENDIMENTO)) {
+                    totalOrcamentos += ((CategoriaDespesas)c).getOrcamento();
+                }
+            }
             tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                     getResources().getString(R.string.orcamento_disponivel),
-                    gestDados.getCategoriaRendimento().getResumoDeTransacoes(),
+                    (gestDados.getCategoriaRendimento().getResumoDeTransacoes()-totalOrcamentos),
                     getResources().getString(R.string.unidade_monetaria)));
         }
 
@@ -124,9 +140,20 @@ public class InfoDetalhada extends AppCompatActivity
         }
         else
         {
+            tvSubTitulo.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                    getResources().getString(R.string.dinheiro_total),
+                    gestDados.getCategoriaRendimento().getResumoDeTransacoes(),
+                    getResources().getString(R.string.unidade_monetaria)));
+            double totalOrcamentos = 0.0;
+            List<Categoria> categorias = gestDados.getCategorias();
+            for (Categoria c : categorias) {
+                if(!c.getNome().equalsIgnoreCase(CategoriaRendimento.NOME_RENDIMENTO)) {
+                    totalOrcamentos += ((CategoriaDespesas)c).getOrcamento();
+                }
+            }
             tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                     getResources().getString(R.string.orcamento_disponivel),
-                    gestDados.getCategoriaRendimento().getResumoDeTransacoes(),
+                    (gestDados.getCategoriaRendimento().getResumoDeTransacoes()-totalOrcamentos),
                     getResources().getString(R.string.unidade_monetaria)));
         }
     }
@@ -371,9 +398,20 @@ public class InfoDetalhada extends AppCompatActivity
                                             }
                                         } else {
                                             gestDados.removeTransacao(gestDados.getCategoriaRendimento().getNome(), gestDados.getCategoriaRendimento().getTransacao(i).getNome());
-                                            tvRodape.setText(String.format(Locale.getDefault(), "%s%.2f%s",
-                                                    getResources().getString(R.string.orcamento_disponivel),
+                                            tvSubTitulo.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                                                    getResources().getString(R.string.dinheiro_total),
                                                     gestDados.getCategoriaRendimento().getResumoDeTransacoes(),
+                                                    getResources().getString(R.string.unidade_monetaria)));
+                                            double totalOrcamentos = 0.0;
+                                            List<Categoria> categorias = gestDados.getCategorias();
+                                            for (Categoria c : categorias) {
+                                                if(!c.getNome().equalsIgnoreCase(CategoriaRendimento.NOME_RENDIMENTO)) {
+                                                    totalOrcamentos += ((CategoriaDespesas)c).getOrcamento();
+                                                }
+                                            }
+                                            tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                                                    getResources().getString(R.string.orcamento_disponivel),
+                                                    (gestDados.getCategoriaRendimento().getResumoDeTransacoes()-totalOrcamentos),
                                                     getResources().getString(R.string.unidade_monetaria)));
                                         }
                                         notifyDataSetChanged();
