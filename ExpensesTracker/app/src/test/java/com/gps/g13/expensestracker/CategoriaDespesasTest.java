@@ -1,8 +1,6 @@
 package com.gps.g13.expensestracker;
 
 import com.gps.g13.expensestracker.gestaodedados.CategoriaDespesas;
-import com.gps.g13.expensestracker.gestaodedados.Dados;
-import com.gps.g13.expensestracker.gestaodedados.ListaNomesCategoriasDespesas;
 import com.gps.g13.expensestracker.gestaodedados.Transacao;
 
 import org.junit.Before;
@@ -39,6 +37,7 @@ public class CategoriaDespesasTest {
         //quando se introduz x orcamento positivo
         d.setOrcamento(50.3);
         assertEquals(50.3, d.getOrcamento(), 0);
+
         d.setOrcamento(-123);
         assertEquals(50.3, d.getOrcamento(), 0);
 
@@ -69,12 +68,20 @@ public class CategoriaDespesasTest {
         d.adicionarTransacao(teste1);
         d.adicionarTransacao(teste2);
 
-
-        //tendo sido adicionada uma despesa de 5e anteriormente...
-        //o resultado da getResumoDeTransacoes e' 5, pq foi realizada a despesa de 5e
         assertEquals(20.0, d.getResumoDeTransacoes(), 0);
 
-        //o resultado tera de ser 20e-5e = 15e
+    }
+
+    @Test
+    public void verificaOrcamentoRestante(){
+        //admitindo que o orcamento e' 20e...
+        d.setOrcamento(30);
+
+        Transacao teste1 = new Transacao(5.0, new Date(), "teste", null);
+        Transacao teste2 = new Transacao(15.0, new Date(), "teste", null);
+        d.adicionarTransacao(teste1);
+        d.adicionarTransacao(teste2);
+        //o resultado tera de ser 30e-20e = 10e
         assertEquals(10, d.getOrcamentoRestante(), 0);
     }
 }
