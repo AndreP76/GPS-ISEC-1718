@@ -5,8 +5,8 @@ package com.gps.g13.expensestracker.gestaodedados.exceptions;
  */
 
 public class InvalidCategoryException extends Throwable {
-    public InvalidCategoryException(String s) {
-        super(s);
+    public InvalidCategoryException(String string) {
+        super(string);
     }
 
     public InvalidCategoryException() {

@@ -5,7 +5,7 @@ package com.gps.g13.expensestracker.gestaodedados.exceptions;
  */
 
 public class InvalidDateException extends Throwable {
-    public InvalidDateException(String s) {
-        super(s);
+    public InvalidDateException(String string) {
+        super(string);
     }
 }

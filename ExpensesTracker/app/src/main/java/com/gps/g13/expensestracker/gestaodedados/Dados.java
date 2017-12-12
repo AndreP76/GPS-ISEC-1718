@@ -18,15 +18,15 @@ public class Dados implements Serializable {
     public Dados() {
         categorias = new HashMap<>();
         ListaNomesCategoriasDespesas[] nomes = ListaNomesCategoriasDespesas.values();
-        for (ListaNomesCategoriasDespesas i : nomes) {
-            categorias.put(i.name(), new CategoriaDespesas(i.name()));
+        for (ListaNomesCategoriasDespesas lista : nomes) {
+            categorias.put(lista.name(), new CategoriaDespesas(lista.name()));
         }
         categorias.put(RENDIMENTOS_KEY, new CategoriaRendimento());
     }
 
     public boolean containsCategory(String name) {
-        for (Categoria c : getCategorias()) {
-            if (c.getNome().equals(name)) {
+        for (Categoria categoria : getCategorias()) {
+            if (categoria.getNome().equals(name)) {
                 return true;
             }
         }
@@ -44,9 +44,9 @@ public class Dados implements Serializable {
 
     public boolean adicionaTransacao(String categoria, String nome, double montante, Date data) {
         boolean resposta = false;
-        Categoria c = categorias.get(categoria);
-        if (c != null) {
-            c.adicionarTransacao(new Transacao(montante, data, nome, c));
+        Categoria categoria2 = categorias.get(categoria);
+        if (categoria2 != null) {
+            categoria2.adicionarTransacao(new Transacao(montante, data, nome, categoria2));
             resposta = true;
         }
         return resposta;
@@ -54,12 +54,12 @@ public class Dados implements Serializable {
 
     public boolean removeTransacao(String categoria, String nome) {
         boolean resposta = false;
-        Categoria c = categorias.get(categoria);
-        if (c != null) {
-            List<Transacao> l = c.getListaDeTransacoes();
+        Categoria categoria2 = categorias.get(categoria);
+        if (categoria2 != null) {
+            List<Transacao> l = categoria2.getListaDeTransacoes();
             for (Transacao i : l) {
                 if (i.getNome().compareTo(nome) == 0) {
-                    c.removeTransacao(i);
+                    categoria2.removeTransacao(i);
                     break;
                 }
             }
@@ -70,14 +70,14 @@ public class Dados implements Serializable {
 
     public boolean editaTransacao(String categoria, String nome, String nomeNovo, double montante, Date data) {
         boolean resposta = false;
-        Categoria c = categorias.get(categoria);
-        if (c != null) {
-            List<Transacao> l = c.getListaDeTransacoes();
-            for (Transacao i : l) {
-                if (i.getNome().compareTo(nome) == 0) {
-                    i.setMontante(montante);
-                    i.setData(data);
-                    i.setNome(nomeNovo);
+        Categoria categoria2 = categorias.get(categoria);
+        if (categoria2 != null) {
+            List<Transacao> list = categoria2.getListaDeTransacoes();
+            for (Transacao transacao : list) {
+                if (transacao.getNome().compareTo(nome) == 0) {
+                    transacao.setMontante(montante);
+                    transacao.setData(data);
+                    transacao.setNome(nomeNovo);
                     break;
                 }
             }

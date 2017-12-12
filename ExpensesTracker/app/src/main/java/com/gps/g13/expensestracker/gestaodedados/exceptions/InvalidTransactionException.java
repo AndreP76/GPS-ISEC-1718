@@ -5,7 +5,7 @@ package com.gps.g13.expensestracker.gestaodedados.exceptions;
  */
 
 public class InvalidTransactionException extends Throwable {
-    public InvalidTransactionException(String s) {
-        super(s);
+    public InvalidTransactionException(String string) {
+        super(string);
     }
 }
