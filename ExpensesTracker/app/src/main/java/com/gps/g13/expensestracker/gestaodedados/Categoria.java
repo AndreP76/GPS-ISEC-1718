@@ -2,6 +2,9 @@ package com.gps.g13.expensestracker.gestaodedados;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class Categoria implements Serializable {
@@ -33,6 +36,12 @@ public abstract class Categoria implements Serializable {
     public abstract double getResumoDeTransacoes();// as classes derivadas implementam isto de forma apropriada
 
     public List<Transacao> getListaDeTransacoes() {
+        Collections.sort(transacoes, new Comparator<Transacao>() {
+            @Override
+            public int compare(Transacao transacao1, Transacao transacao2) {
+                return transacao2.getData().compareTo(transacao1.getData());
+            }
+        });
         return transacoes;
     }
 
