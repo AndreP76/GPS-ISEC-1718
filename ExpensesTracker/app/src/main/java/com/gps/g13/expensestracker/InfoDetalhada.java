@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +23,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gps.g13.expensestracker.gestaodedados.Categoria;
 import com.gps.g13.expensestracker.gestaodedados.CategoriaDespesas;
+import com.gps.g13.expensestracker.gestaodedados.CategoriaRendimento;
 import com.gps.g13.expensestracker.gestaodedados.Dados;
 import com.gps.g13.expensestracker.gestaodedados.GestorDados;
 import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidAmmountException;
@@ -32,6 +35,7 @@ import com.gps.g13.expensestracker.gestaodedados.exceptions.InvalidTransactionEx
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class InfoDetalhada extends AppCompatActivity
@@ -85,11 +89,9 @@ public class InfoDetalhada extends AppCompatActivity
                         getResources().getString(R.string.orcamento),
                         ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento(),
                         getResources().getString(R.string.unidade_monetaria)));
-                //TODO : HERE
-                double restante = ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento() - gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes();
                 tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                         getResources().getString(R.string.orcamento_restante),
-                        restante,
+                        ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamentoRestante(),
                         getResources().getString(R.string.unidade_monetaria)));
 
             } catch (InvalidCategoryException e) {
@@ -98,10 +100,21 @@ public class InfoDetalhada extends AppCompatActivity
         } else {
             categoria = Dados.RENDIMENTOS_KEY;
             tvCategoria.setText(gestDados.getCategoriaRendimento().getNome());
-            tvRodape.setText(getResources().getString(R.string.dinheiro_total) + gestDados.getCategoriaRendimento().getResumoDeTransacoes() + getResources().getString(R.string.unidade_monetaria));
+            tvSubTitulo.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                    getResources().getString(R.string.dinheiro_total),
+                    gestDados.getCategoriaRendimento().getResumoDeTransacoes(),
+                    getResources().getString(R.string.unidade_monetaria)));
+
+            double totalOrcamentos = 0.0;
+            List<Categoria> categorias = gestDados.getCategorias();
+            for (Categoria c : categorias) {
+                if(!c.getNome().equalsIgnoreCase(CategoriaRendimento.NOME_RENDIMENTO)) {
+                    totalOrcamentos += ((CategoriaDespesas)c).getOrcamento();
+                }
+            }
             tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                     getResources().getString(R.string.orcamento_disponivel),
-                    gestDados.getCategoriaRendimento().getResumoDeTransacoes(),
+                    (gestDados.getCategoriaRendimento().getResumoDeTransacoes()-totalOrcamentos),
                     getResources().getString(R.string.unidade_monetaria)));
         }
 
@@ -115,6 +128,34 @@ public class InfoDetalhada extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         lva.notifyDataSetChanged();
+        if (!isRendimento) {
+            try {
+                tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                        getResources().getString(R.string.orcamento_restante),
+                        ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamentoRestante(),
+                        getResources().getString(R.string.unidade_monetaria)));
+            } catch (InvalidCategoryException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            tvSubTitulo.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                    getResources().getString(R.string.dinheiro_total),
+                    gestDados.getCategoriaRendimento().getResumoDeTransacoes(),
+                    getResources().getString(R.string.unidade_monetaria)));
+            double totalOrcamentos = 0.0;
+            List<Categoria> categorias = gestDados.getCategorias();
+            for (Categoria c : categorias) {
+                if(!c.getNome().equalsIgnoreCase(CategoriaRendimento.NOME_RENDIMENTO)) {
+                    totalOrcamentos += ((CategoriaDespesas)c).getOrcamento();
+                }
+            }
+            tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                    getResources().getString(R.string.orcamento_disponivel),
+                    (gestDados.getCategoriaRendimento().getResumoDeTransacoes()-totalOrcamentos),
+                    getResources().getString(R.string.unidade_monetaria)));
+        }
     }
 
     @Override
@@ -158,7 +199,7 @@ public class InfoDetalhada extends AppCompatActivity
             } catch (InvalidCategoryException e) {
                 e.printStackTrace();
             }
-            input.setText(String.format(Locale.getDefault(), "%.2f%s", orcamento, getResources().getString(R.string.unidade_monetaria)));    // mostrar o valor do orcamento atual
+            input.setText(Double.toString(orcamento));    // mostrar o valor do orcamento atual
 
             alertDialogBuilder.setView(input); // uncomment this line
 
@@ -169,14 +210,19 @@ public class InfoDetalhada extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int id) {
                             try {
                                 gestDados.editarOrcamento(categoria, Double.parseDouble(input.getText().toString()));
-                                tvSubTitulo.setText(String.format(Locale.getDefault(), "%s %0.2f%s",
+                                tvSubTitulo.setText(String.format(Locale.getDefault(), "%s %.2f%s",
                                         getResources().getString(R.string.orcamento),
                                         ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamento(),
                                         getResources().getString(R.string.unidade_monetaria)));
+                                tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                                        getResources().getString(R.string.orcamento_restante),
+                                        ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamentoRestante(),
+                                        getResources().getString(R.string.unidade_monetaria)));
+
                             } catch (InvalidCategoryException e) {
                                 e.printStackTrace();
                             } catch (InvalidAmmountException | NumberFormatException e) {
-                                Toast.makeText(context, "Isso não é um numero valído", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Isso não é um número válído", Toast.LENGTH_SHORT).show();
                             }
                         }
                     })
@@ -234,7 +280,6 @@ public class InfoDetalhada extends AppCompatActivity
 
 
     private class lvAdapter extends BaseAdapter {
-        private int posicao;
 
         @Override
         public int getCount() {
@@ -270,8 +315,7 @@ public class InfoDetalhada extends AppCompatActivity
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            posicao = i;
+        public View getView(final int i, View view, ViewGroup viewGroup) {
             View linha = getLayoutInflater().inflate(R.layout.linha_da_lista_de_transacoes, null);
             TextView tv_nomeTransacao = ((TextView) linha.findViewById(R.id.tv_nomeTransacao_InfoGeral));
             TextView tvValorTransacao = (TextView) linha.findViewById(R.id.tv_ValorTransacao_InfoGeral);
@@ -318,12 +362,12 @@ public class InfoDetalhada extends AppCompatActivity
                     //intent.putExtra("GD", gestDados);
                     if (!isRendimento) {
                         try {
-                            intent.putExtra("TR", gestDados.getCategoriaDespesas(categoria).getTransacao(posicao));
+                            intent.putExtra("TR", gestDados.getCategoriaDespesas(categoria).getTransacao(i));
                         } catch (InvalidCategoryException e) {
                             e.printStackTrace();
                         }
                     } else {
-                        intent.putExtra("TR", gestDados.getCategoriaRendimento().getTransacao(posicao));
+                        intent.putExtra("TR", gestDados.getCategoriaRendimento().getTransacao(i));
                     }
                     startActivity(intent);
                 }
@@ -333,9 +377,7 @@ public class InfoDetalhada extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
 
-
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
                     // set title
                     alertDialogBuilder.setTitle("Tem a certeza que pretende apagar?");
                     // set dialog message
@@ -345,16 +387,31 @@ public class InfoDetalhada extends AppCompatActivity
                                 public void onClick(DialogInterface dialog, int id) {
                                     try {
                                         if (!isRendimento) {
-                                            gestDados.removeTransacao(gestDados.getCategoriaDespesas(categoria).getNome(), gestDados.getCategoriaDespesas(categoria).getTransacao(posicao).getNome());
-                                            tvRodape.setText(String.format(Locale.getDefault(), "%s%.2f%s",
-                                                    getResources().getString(R.string.orcamento_restante),
-                                                    gestDados.getCategoriaDespesas(categoria).getResumoDeTransacoes(),
-                                                    getResources().getString(R.string.unidade_monetaria)));
+                                            gestDados.removeTransacao(gestDados.getCategoriaDespesas(categoria).getNome(), gestDados.getCategoriaDespesas(categoria).getTransacao(i).getNome());
+                                            try {
+                                                tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                                                        getResources().getString(R.string.orcamento_restante),
+                                                        ((CategoriaDespesas) gestDados.getCategoriaDespesas(categoria)).getOrcamentoRestante(),
+                                                        getResources().getString(R.string.unidade_monetaria)));
+                                            } catch (InvalidCategoryException e) {
+                                                e.printStackTrace();
+                                            }
                                         } else {
-                                            gestDados.removeTransacao(gestDados.getCategoriaRendimento().getNome(), gestDados.getCategoriaRendimento().getTransacao(posicao).getNome());
-                                            tvRodape.setText(String.format(Locale.getDefault(), "%s%.2f%s",
-                                                    getResources().getString(R.string.orcamento_disponivel),
+                                            gestDados.removeTransacao(gestDados.getCategoriaRendimento().getNome(), gestDados.getCategoriaRendimento().getTransacao(i).getNome());
+                                            tvSubTitulo.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                                                    getResources().getString(R.string.dinheiro_total),
                                                     gestDados.getCategoriaRendimento().getResumoDeTransacoes(),
+                                                    getResources().getString(R.string.unidade_monetaria)));
+                                            double totalOrcamentos = 0.0;
+                                            List<Categoria> categorias = gestDados.getCategorias();
+                                            for (Categoria c : categorias) {
+                                                if(!c.getNome().equalsIgnoreCase(CategoriaRendimento.NOME_RENDIMENTO)) {
+                                                    totalOrcamentos += ((CategoriaDespesas)c).getOrcamento();
+                                                }
+                                            }
+                                            tvRodape.setText(String.format(Locale.getDefault(), "%s %.2f%s",
+                                                    getResources().getString(R.string.orcamento_disponivel),
+                                                    (gestDados.getCategoriaRendimento().getResumoDeTransacoes()-totalOrcamentos),
                                                     getResources().getString(R.string.unidade_monetaria)));
                                         }
                                         notifyDataSetChanged();

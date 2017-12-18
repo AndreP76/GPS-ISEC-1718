@@ -52,13 +52,13 @@ public class Transacao implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Transacao) {
-            if (obj == this) {
+    public boolean equals(Object object) {
+        if (object instanceof Transacao) {
+            if (object == this) {
                 return true;
             }
-            Transacao t = (Transacao) obj;
-            if (t.getNome().equals(this.getNome()) && t.getData().equals(this.getData()) && t.getMontante() == (this.getMontante()) && this.getCategoria() == t.getCategoria()) {
+            Transacao transacao = (Transacao) object;
+            if (transacao.getNome().equals(this.getNome()) && transacao.getData().equals(this.getData()) && transacao.getMontante() == (this.getMontante()) && this.getCategoria() == transacao.getCategoria()) {
                 return true;
             } else {
                 return false;

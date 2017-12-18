@@ -5,7 +5,7 @@ package com.gps.g13.expensestracker.gestaodedados.exceptions;
  */
 
 public class InvalidNameException extends Throwable {
-    public InvalidNameException(String s) {
-        super(s);
+    public InvalidNameException(String string) {
+        super(string);
     }
 }

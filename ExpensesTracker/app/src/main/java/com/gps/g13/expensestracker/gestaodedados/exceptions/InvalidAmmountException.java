@@ -5,8 +5,8 @@ package com.gps.g13.expensestracker.gestaodedados.exceptions;
  */
 
 public class InvalidAmmountException extends Throwable {
-    public InvalidAmmountException(String s) {
-        super(s);
+    public InvalidAmmountException(String string) {
+        super(string);
     }
 
     public InvalidAmmountException() {

@@ -27,9 +27,10 @@ public class GestorDados implements Serializable {
     public GestorDados(Dados data) {
         this.data = data;
     } // para testes
-    public GestorDados(Context c) {
-        BACKUP_PATH = c.getFilesDir().toString() + "/settings.xml";
-        STANDARD_PATH = c.getFilesDir().toString() + "/data.bin";
+
+    public GestorDados(Context context) {
+        BACKUP_PATH = context.getFilesDir().toString() + "/settings.xml";
+        STANDARD_PATH = context.getFilesDir().toString() + "/data.bin";
         this.data = readDataFromFile(STANDARD_PATH, true);
         if (this.data == null) {
             this.data = new Dados();
@@ -43,12 +44,12 @@ public class GestorDados implements Serializable {
     private Dados readDataFromBackupFile(String originFile) {
         try (FileInputStream bIn = new FileInputStream(BACKUP_PATH)) {
             try (ObjectInputStream OIS = new ObjectInputStream(bIn)) {
-                Object o = OIS.readObject();
-                if (!(o instanceof Dados)) {
+                Object object = OIS.readObject();
+                if (!(object instanceof Dados)) {
                     throw new ClassNotFoundException();//error reading from backup. Create empty object
                 } else {
                     overrideFileWithBackup(originFile);
-                    return (Dados) o;
+                    return (Dados) object;
                 }
             } catch (ClassNotFoundException e1) {
                 return new Dados();
@@ -62,11 +63,11 @@ public class GestorDados implements Serializable {
     private Dados readDataFromFile(String dataFile, boolean useBackup) {
         try (FileInputStream fIn = new FileInputStream(dataFile)) {
             try (ObjectInputStream OIS = new ObjectInputStream(fIn)) {
-                Object o = OIS.readObject();
-                if (!(o instanceof Dados)) {
+                Object object = OIS.readObject();
+                if (!(object instanceof Dados)) {
                     throw new ClassNotFoundException();// so we can read from the backup in the catch clause
                 } else {
-                    return (Dados) o;
+                    return (Dados) object;
                 }
             } catch (ClassNotFoundException e) {
                 if (useBackup)
@@ -84,7 +85,7 @@ public class GestorDados implements Serializable {
     private void overrideFileWithBackup(String dataFile) {
         FileUtils.copyFiles(BACKUP_PATH, dataFile);
     }
-    private void writeDataToFile(String dataFile) {
+    private void writeDataToFile(String dataFile) {             //TODO -> corrigir no diagrama de class, está na mesma linha - corrigido
         try {
             try (FileOutputStream writeOut = new FileOutputStream(dataFile)) {
                 try (ObjectOutputStream oos = new ObjectOutputStream(writeOut)) {
@@ -135,12 +136,12 @@ public class GestorDados implements Serializable {
     //Guarda toda a informacao da classe em um ficheiro
     public void guardaDados() {
         writeDataToFile(STANDARD_PATH);
-        Dados d = readDataFromFile(STANDARD_PATH, false);
-        if (d != null/* && d.equals(data)*/) {
+        Dados dados = readDataFromFile(STANDARD_PATH, false);
+        if (dados != null/* && d.equals(data)*/) {
             Log.v("[GESTOR] :: ", "Data integrity confirmed. Replacing backup file");
             writeDataToFile(BACKUP_PATH);
         } else {
-            if (d == null) {
+            if (dados == null) {
                 Log.e("[GESTOR] :: ", "Reading from just written data returned null. Overriding with backup file");
                 overrideFileWithBackup(STANDARD_PATH);
             }
@@ -178,18 +179,32 @@ public class GestorDados implements Serializable {
         }
         return false;
     }
-    public boolean editarTransacao(String categoria, String nomeAtual, String novoNome, double montante, Date data) throws InvalidCategoryException, InvalidTransactionException {
+    public boolean editarTransacao(String categoria, String nomeAtual, String novoNome, double montante, Date data) throws InvalidCategoryException, InvalidTransactionException, InvalidDateException, InvalidAmmountException, InvalidNameException {
         if (ValidationModule.isValidTransaction(categoria, nomeAtual, this.data)) {
-            return this.data.editaTransacao(categoria, nomeAtual, novoNome, montante, data);
-        } else {
+            if (ValidationModule.isValidName(novoNome)){
+                if (ValidationModule.isValidAmmount(montante)) {
+                    if (ValidationModule.isValidDate(data)) {
+                        return this.data.editaTransacao(categoria, nomeAtual, novoNome, montante, data);
+                    } else {
+                        throw new InvalidDateException("Data " + data + "is invalid!");
+                    }
+                }else {
+                    throw new InvalidAmmountException("Ammount " + montante + "is invalid!");
+                }
+            }
+            else{
+                throw new InvalidNameException("Name " + novoNome + "is invalid!");
+            }
+        }
+        else{
             throw new InvalidTransactionException("Transaction " + nomeAtual + " is invalid");
         }
     }
     public boolean editarOrcamento(String categoria, double orçamento) throws InvalidCategoryException, InvalidAmmountException {
         if (ValidationModule.isValidAmmount(orçamento)) {
             if (ValidationModule.isValidExpensesCategory(categoria, data)) {
-                CategoriaDespesas c = (CategoriaDespesas) data.getCategoria(categoria);
-                c.setOrcamento(orçamento);
+                CategoriaDespesas categoria2 = (CategoriaDespesas) data.getCategoria(categoria);
+                categoria2.setOrcamento(orçamento);
                 return true;
             } else {
                 throw new InvalidCategoryException();
